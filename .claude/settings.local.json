@@ -4,7 +4,9 @@
       "Bash(bun run:*)",
       "Bash(bun build:*)",
       "Bash(npx tsc:*)",
-      "Bash(bun:*)"
+      "Bash(bun:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)"
     ]
   }
 }
