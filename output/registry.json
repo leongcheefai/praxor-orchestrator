@@ -1,4 +1,149 @@
 {
-  "generatedAt": "2026-04-02T12:53:29.384Z",
-  "projects": []
+  "generatedAt": "2026-04-02T13:26:44.159Z",
+  "projects": [
+    {
+      "name": "offero",
+      "path": "/Users/leongcheefai/Documents/private/projects/offero",
+      "type": "saas",
+      "platform": "web",
+      "status": "active",
+      "description": "Offero is a platform for creating and managing offers for your products and services.",
+      "health": "🟢",
+      "git": {
+        "hasGit": true,
+        "lastCommitDate": "2026-04-02T11:20:39.000Z",
+        "lastCommitMessage": "fix: wrong og imag",
+        "daysSinceLastCommit": 0,
+        "currentBranch": "master",
+        "uncommittedChanges": false
+      },
+      "claudeMd": {
+        "exists": true,
+        "currentGoal": null,
+        "inProgress": [],
+        "knownIssues": []
+      }
+    },
+    {
+      "name": "viaticus",
+      "path": "/Users/leongcheefai/Documents/private/projects/firsttofly/firsttofly-garage-viaticus",
+      "type": "client",
+      "platform": "both",
+      "status": "active",
+      "description": "Client mobile + web app",
+      "health": "🟢",
+      "git": {
+        "hasGit": true,
+        "lastCommitDate": "2026-04-02T11:17:00.000Z",
+        "lastCommitMessage": "fix: resources not able to update",
+        "daysSinceLastCommit": 0,
+        "currentBranch": "production",
+        "uncommittedChanges": false
+      },
+      "claudeMd": {
+        "exists": true,
+        "currentGoal": null,
+        "inProgress": [],
+        "knownIssues": []
+      },
+      "clientName": "Acme Corp",
+      "budget": {
+        "total": 50000,
+        "invoiced": 25000,
+        "currency": "USD"
+      }
+    },
+    {
+      "name": "praxor",
+      "path": "/Users/leongcheefai/Documents/private/projects/praxor",
+      "type": "saas",
+      "platform": "web",
+      "status": "active",
+      "description": "Offero is a platform for creating and managing offers for your products and services.",
+      "health": "🟡",
+      "git": {
+        "hasGit": true,
+        "lastCommitDate": "2026-03-27T13:00:00.000Z",
+        "lastCommitMessage": "fix: update offero url",
+        "daysSinceLastCommit": 6,
+        "currentBranch": "main",
+        "uncommittedChanges": false
+      },
+      "claudeMd": {
+        "exists": true,
+        "currentGoal": null,
+        "inProgress": [],
+        "knownIssues": []
+      }
+    },
+    {
+      "name": "onz-webapp",
+      "path": "/Users/leongcheefai/Documents/private/projects/onz-webapp",
+      "type": "saas",
+      "platform": "web",
+      "status": "active",
+      "description": "Offero is a platform for creating and managing offers for your products and services.",
+      "health": "🟢",
+      "git": {
+        "hasGit": true,
+        "lastCommitDate": "2026-04-02T10:52:48.000Z",
+        "lastCommitMessage": "fix: further reduce building time",
+        "daysSinceLastCommit": 0,
+        "currentBranch": "main",
+        "uncommittedChanges": false
+      },
+      "claudeMd": {
+        "exists": false,
+        "currentGoal": null,
+        "inProgress": [],
+        "knownIssues": []
+      }
+    },
+    {
+      "name": "vanta - team hub",
+      "path": "/Users/leongcheefai/Documents/private/projects/vanta/team-hub-",
+      "type": "saas",
+      "platform": "web",
+      "status": "active",
+      "description": "Offero is a platform for creating and managing offers for your products and services.",
+      "health": "🔴",
+      "git": {
+        "hasGit": true,
+        "lastCommitDate": "2026-03-13T09:44:37.000Z",
+        "lastCommitMessage": "Update CLAUDE.md",
+        "daysSinceLastCommit": 20,
+        "currentBranch": "main",
+        "uncommittedChanges": false
+      },
+      "claudeMd": {
+        "exists": true,
+        "currentGoal": null,
+        "inProgress": [],
+        "knownIssues": []
+      }
+    },
+    {
+      "name": "vanta - workshop management",
+      "path": "/Users/leongcheefai/Documents/private/projects/vanta/workshop-management-system",
+      "type": "saas",
+      "platform": "web",
+      "status": "active",
+      "description": "Offero is a platform for creating and managing offers for your products and services.",
+      "health": "🔴",
+      "git": {
+        "hasGit": true,
+        "lastCommitDate": "2026-03-13T06:51:10.000Z",
+        "lastCommitMessage": "Merge pull request #1 from kit9898/main",
+        "daysSinceLastCommit": 20,
+        "currentBranch": "dev-cheefai",
+        "uncommittedChanges": false
+      },
+      "claudeMd": {
+        "exists": true,
+        "currentGoal": null,
+        "inProgress": [],
+        "knownIssues": []
+      }
+    }
+  ]
 }

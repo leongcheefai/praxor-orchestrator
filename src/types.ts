@@ -11,9 +11,14 @@ export interface ProjectConfig {
   reactivateWhen?: string;
 }
 
+export interface TelegramConfig {
+  enabled: boolean;
+}
+
 export interface OrchestratorConfig {
   outputDir: string;
   stalenessThresholdDays: number;
+  telegram?: TelegramConfig;
   projects: ProjectConfig[];
 }
 

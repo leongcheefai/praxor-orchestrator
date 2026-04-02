@@ -5,6 +5,7 @@
   "scripts": {
     "status": "bun run src/cli.ts status",
     "briefing": "bun run src/cli.ts briefing",
-    "sync": "bun run src/cli.ts sync"
+    "sync": "bun run src/cli.ts sync",
+    "notify": "bun run src/cli.ts notify"
   }
 }

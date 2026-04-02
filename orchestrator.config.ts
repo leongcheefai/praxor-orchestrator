@@ -3,6 +3,9 @@ import type { OrchestratorConfig } from "./src/types";
 const config: OrchestratorConfig = {
   outputDir: "~/orchestrator/output",
   stalenessThresholdDays: 7,
+  telegram: {
+    enabled: true,
+  },
   projects: [
     {
       name: "offero",
