@@ -1,9 +1,10 @@
 {
-  "generatedAt": "2026-04-02T13:26:44.159Z",
+  "generatedAt": "2026-04-02T14:01:45.116Z",
   "projects": [
     {
       "name": "offero",
-      "path": "/Users/leongcheefai/Documents/private/projects/offero",
+      "repo": "leongcheefai/offero",
+      "branch": "main",
       "type": "saas",
       "platform": "web",
       "status": "active",
@@ -26,18 +27,19 @@
     },
     {
       "name": "viaticus",
-      "path": "/Users/leongcheefai/Documents/private/projects/firsttofly/firsttofly-garage-viaticus",
+      "repo": "first-to-fly/firsttofly-garage-viaticus",
+      "branch": "main",
       "type": "client",
       "platform": "both",
       "status": "active",
       "description": "Client mobile + web app",
-      "health": "🟢",
+      "health": "🔴",
       "git": {
         "hasGit": true,
-        "lastCommitDate": "2026-04-02T11:17:00.000Z",
-        "lastCommitMessage": "fix: resources not able to update",
-        "daysSinceLastCommit": 0,
-        "currentBranch": "production",
+        "lastCommitDate": "2026-02-21T05:28:34.000Z",
+        "lastCommitMessage": "feat: add change detection to skip unnecessary deploys",
+        "daysSinceLastCommit": 40,
+        "currentBranch": "main",
         "uncommittedChanges": false
       },
       "claudeMd": {
@@ -55,7 +57,8 @@
     },
     {
       "name": "praxor",
-      "path": "/Users/leongcheefai/Documents/private/projects/praxor",
+      "repo": "leongcheefai/praxor",
+      "branch": "main",
       "type": "saas",
       "platform": "web",
       "status": "active",
@@ -78,7 +81,8 @@
     },
     {
       "name": "onz-webapp",
-      "path": "/Users/leongcheefai/Documents/private/projects/onz-webapp",
+      "repo": "weikaikhoo/onz-webapp",
+      "branch": "main",
       "type": "saas",
       "platform": "web",
       "status": "active",
@@ -101,17 +105,18 @@
     },
     {
       "name": "vanta - team hub",
-      "path": "/Users/leongcheefai/Documents/private/projects/vanta/team-hub-",
+      "repo": "kit9898/team-hub-",
+      "branch": "main",
       "type": "saas",
       "platform": "web",
       "status": "active",
       "description": "Offero is a platform for creating and managing offers for your products and services.",
-      "health": "🔴",
+      "health": "🟢",
       "git": {
         "hasGit": true,
-        "lastCommitDate": "2026-03-13T09:44:37.000Z",
-        "lastCommitMessage": "Update CLAUDE.md",
-        "daysSinceLastCommit": 20,
+        "lastCommitDate": "2026-04-02T05:50:07.000Z",
+        "lastCommitMessage": "chore: trigger Vercel deployment",
+        "daysSinceLastCommit": 0,
         "currentBranch": "main",
         "uncommittedChanges": false
       },
@@ -124,7 +129,8 @@
     },
     {
       "name": "vanta - workshop management",
-      "path": "/Users/leongcheefai/Documents/private/projects/vanta/workshop-management-system",
+      "repo": "kit9898/workshop-management-system",
+      "branch": "main",
       "type": "saas",
       "platform": "web",
       "status": "active",
@@ -132,10 +138,10 @@
       "health": "🔴",
       "git": {
         "hasGit": true,
-        "lastCommitDate": "2026-03-13T06:51:10.000Z",
-        "lastCommitMessage": "Merge pull request #1 from kit9898/main",
-        "daysSinceLastCommit": 20,
-        "currentBranch": "dev-cheefai",
+        "lastCommitDate": "2026-03-16T06:33:07.000Z",
+        "lastCommitMessage": "Merge pull request #3 from kit9898/kit",
+        "daysSinceLastCommit": 17,
+        "currentBranch": "main",
         "uncommittedChanges": false
       },
       "claudeMd": {

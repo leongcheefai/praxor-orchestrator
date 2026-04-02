@@ -6,6 +6,8 @@
     "status": "bun run src/cli.ts status",
     "briefing": "bun run src/cli.ts briefing",
     "sync": "bun run src/cli.ts sync",
-    "notify": "bun run src/cli.ts notify"
+    "notify": "bun run src/cli.ts notify",
+    "server": "bun run src/server.ts",
+    "cron": "bun run src/cron.ts"
   }
 }

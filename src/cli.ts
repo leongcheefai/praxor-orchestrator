@@ -1,6 +1,8 @@
 import { mkdirSync, existsSync } from "fs";
 import { join } from "path";
-import { loadConfig, expandPath } from "./config";
+import { homedir } from "os";
+import { resolve } from "path";
+import { loadConfig } from "./config";
 import { scanGit, scanClaudeMd } from "./scanner";
 import { computeHealth } from "./health";
 import { printTable } from "./table";
@@ -8,7 +10,14 @@ import { generateBriefing, generateRegistry } from "./briefing";
 import { sendTelegram, formatTelegramBriefing } from "./telegram";
 import type { ProjectReport } from "./types";
 
-async function scanAll(): Promise<{ reports: ProjectReport[]; outputDir: string }> {
+function expandPath(p: string): string {
+  if (p.startsWith("~")) {
+    return resolve(homedir(), p.slice(2));
+  }
+  return resolve(p);
+}
+
+export async function scanAll(): Promise<{ reports: ProjectReport[]; outputDir: string }> {
   const config = await loadConfig();
   const outputDir = expandPath(config.outputDir);
 
@@ -18,10 +27,8 @@ async function scanAll(): Promise<{ reports: ProjectReport[]; outputDir: string 
 
   const reports: ProjectReport[] = await Promise.all(
     config.projects.map(async (project) => {
-      const [git, claudeMd] = await Promise.all([
-        scanGit(project),
-        scanClaudeMd(project),
-      ]);
+      const git = await scanGit(project);
+      const claudeMd = await scanClaudeMd(project, git.currentBranch || undefined);
       const health = computeHealth({ config: project, git });
       return { config: project, git, claudeMd, health };
     })
@@ -33,9 +40,28 @@ async function scanAll(): Promise<{ reports: ProjectReport[]; outputDir: string 
 async function main() {
   const command = process.argv[2];
 
-  if (!command || !["status", "briefing", "sync", "notify"].includes(command)) {
-    console.log("Usage: bun run <status|briefing|sync|notify>");
-    process.exit(1);
+  if (!command || !["status", "briefing", "sync", "notify", "help"].includes(command)) {
+    console.log("Usage: bun run src/cli.ts <status|briefing|sync|notify|help>");
+    console.log("");
+    console.log("Commands:");
+    console.log("  status    Show project status table");
+    console.log("  briefing  Generate and save BRIEFING.md");
+    console.log("  sync      Generate BRIEFING.md + registry.json");
+    console.log("  notify    Sync + send Telegram notification");
+    console.log("  help      Show this help message");
+    process.exit(command ? 0 : 1);
+  }
+
+  if (command === "help") {
+    console.log("Usage: bun run src/cli.ts <status|briefing|sync|notify|help>");
+    console.log("");
+    console.log("Commands:");
+    console.log("  status    Show project status table");
+    console.log("  briefing  Generate and save BRIEFING.md");
+    console.log("  sync      Generate BRIEFING.md + registry.json");
+    console.log("  notify    Sync + send Telegram notification");
+    console.log("  help      Show this help message");
+    process.exit(0);
   }
 
   const config = await loadConfig();
@@ -65,7 +91,6 @@ async function main() {
       process.exit(0);
     }
 
-    // Generate and write briefing + registry (full sync)
     const briefing = generateBriefing(reports, config);
     const briefingPath = join(outputDir, "BRIEFING.md");
     await Bun.write(briefingPath, briefing);
@@ -76,7 +101,6 @@ async function main() {
     await Bun.write(registryPath, JSON.stringify(registry, null, 2));
     console.log(`Registry written to ${registryPath}`);
 
-    // Send compact summary to Telegram
     const message = formatTelegramBriefing(reports, config);
     try {
       await sendTelegram(message);
@@ -88,7 +112,10 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error("Error:", err.message);
-  process.exit(1);
-});
+// Only run CLI when executed directly (not imported by server/cron)
+if (import.meta.main) {
+  main().catch((err) => {
+    console.error("Error:", err.message);
+    process.exit(1);
+  });
+}

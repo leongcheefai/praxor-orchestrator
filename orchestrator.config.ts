@@ -9,7 +9,8 @@ const config: OrchestratorConfig = {
   projects: [
     {
       name: "offero",
-      path: "/Users/leongcheefai/Documents/private/projects/offero",
+      repo: "leongcheefai/offero",
+      branch: "master",
       type: "saas",
       platform: "web",
       status: "active",
@@ -17,7 +18,8 @@ const config: OrchestratorConfig = {
     },
     {
       name: "viaticus",
-      path: "/Users/leongcheefai/Documents/private/projects/firsttofly/firsttofly-garage-viaticus",
+      repo: "first-to-fly/firsttofly-garage-viaticus",
+      branch: "production",
       type: "client",
       platform: "both",
       status: "active",
@@ -27,7 +29,8 @@ const config: OrchestratorConfig = {
     },
     {
       name: "praxor",
-      path: "/Users/leongcheefai/Documents/private/projects/praxor",
+      repo: "leongcheefai/praxor",
+      branch: "main",
       type: "saas",
       platform: "web",
       status: "active",
@@ -35,7 +38,8 @@ const config: OrchestratorConfig = {
     },
     {
       name: "onz-webapp",
-      path: "/Users/leongcheefai/Documents/private/projects/onz-webapp",
+      repo: "weikaikhoo/onz-webapp",
+      branch: "main",
       type: "saas",
       platform: "web",
       status: "active",
@@ -43,7 +47,8 @@ const config: OrchestratorConfig = {
     },
     {
       name: "vanta - team hub",
-      path: "/Users/leongcheefai/Documents/private/projects/vanta/team-hub-",
+      repo: "kit9898/team-hub-",
+      branch: "main",
       type: "saas",
       platform: "web",
       status: "active",
@@ -51,7 +56,8 @@ const config: OrchestratorConfig = {
     },
     {
       name: "vanta - workshop management",
-      path: "/Users/leongcheefai/Documents/private/projects/vanta/workshop-management-system",
+      repo: "kit9898/workshop-management-system",
+      branch: "main",
       type: "saas",
       platform: "web",
       status: "active",
@@ -59,7 +65,8 @@ const config: OrchestratorConfig = {
     },
     // {
     //   name: "old-tool",
-    //   path: "~/projects/old-tool",
+    //   repo: "cheefai/old-tool",
+    //   branch: "main",
     //   type: "micro-tool",
     //   platform: "web",
     //   status: "parked",

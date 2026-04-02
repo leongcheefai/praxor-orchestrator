@@ -137,7 +137,8 @@ export function generateRegistry(reports: ProjectReport[]): object {
     generatedAt: new Date().toISOString(),
     projects: reports.map((r) => ({
       name: r.config.name,
-      path: r.config.path,
+      repo: r.config.repo,
+      branch: r.config.branch,
       type: r.config.type,
       platform: r.config.platform,
       status: r.config.status,

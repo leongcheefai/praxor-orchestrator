@@ -21,7 +21,7 @@ export function printTable(reports: ProjectReport[]): void {
     return;
   }
 
-  const headers = ["", "Project", "Last Touched", "Branch", "Next Action"];
+  const headers = ["", "Project", "Last Touched", "Branch", "Latest Action"];
   const rows = reports.map((r) => {
     let nextAction = "";
     if (r.config.status === "parked") {

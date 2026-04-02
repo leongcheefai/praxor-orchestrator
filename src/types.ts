@@ -1,6 +1,7 @@
 export interface ProjectConfig {
   name: string;
-  path: string;
+  repo: string; // GitHub "owner/repo" format
+  branch: string; // branch to scan (default: "main")
   type: "saas" | "client" | "micro-tool";
   platform: "web" | "ios" | "both";
   status: "active" | "parked";
@@ -29,6 +30,7 @@ export interface GitInfo {
   currentBranch: string;
   uncommittedChanges: boolean;
   hasGit: boolean;
+  recentCommits: { hash: string; date: string; message: string }[];
 }
 
 export interface ClaudeMdInfo {
