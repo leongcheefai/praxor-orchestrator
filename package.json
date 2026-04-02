@@ -1,0 +1,10 @@
+{
+  "name": "orchestrator",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "status": "bun run src/cli.ts status",
+    "briefing": "bun run src/cli.ts briefing",
+    "sync": "bun run src/cli.ts sync"
+  }
+}
