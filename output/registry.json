@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-02T14:01:45.116Z",
+  "generatedAt": "2026-04-02T14:06:26.898Z",
   "projects": [
     {
       "name": "offero",
       "repo": "leongcheefai/offero",
-      "branch": "main",
+      "branch": "master",
       "type": "saas",
       "platform": "web",
       "status": "active",
@@ -28,18 +28,18 @@
     {
       "name": "viaticus",
       "repo": "first-to-fly/firsttofly-garage-viaticus",
-      "branch": "main",
+      "branch": "production",
       "type": "client",
       "platform": "both",
       "status": "active",
       "description": "Client mobile + web app",
-      "health": "🔴",
+      "health": "🟢",
       "git": {
         "hasGit": true,
-        "lastCommitDate": "2026-02-21T05:28:34.000Z",
-        "lastCommitMessage": "feat: add change detection to skip unnecessary deploys",
-        "daysSinceLastCommit": 40,
-        "currentBranch": "main",
+        "lastCommitDate": "2026-04-02T11:17:00.000Z",
+        "lastCommitMessage": "fix: resources not able to update",
+        "daysSinceLastCommit": 0,
+        "currentBranch": "production",
         "uncommittedChanges": false
       },
       "claudeMd": {
