@@ -71,13 +71,17 @@ Bun.serve({
           : resolve(config.outputDir);
 
         const reply = await handleWebhookCommand(msg.text, config, outputDir);
-        await sendTelegramReply(reply, msg.messageId).catch(() => {});
+        await sendTelegramReply(reply, msg.messageId).catch((err) => {
+          console.error("Failed to send Telegram reply:", (err as Error).message);
+        });
 
         return new Response("ok");
       } catch (err) {
         console.error("Webhook error:", (err as Error).message);
         if (msg) {
-          await sendTelegramReply(`Error: ${(err as Error).message}`, msg.messageId).catch(() => {});
+          await sendTelegramReply(`Error: ${(err as Error).message}`, msg.messageId).catch((replyErr) => {
+            console.error("Failed to send error reply:", (replyErr as Error).message);
+          });
         }
         return new Response("ok");
       }
