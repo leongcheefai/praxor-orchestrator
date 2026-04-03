@@ -1,9 +1,8 @@
 import { readFileSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import { resolve } from "path";
 import type { OrchestratorConfig } from "./types";
 
-const PROJECT_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const PROJECT_ROOT = resolve(import.meta.dir, "..");
 
 export async function generateAIBriefing(
   registry: object,
