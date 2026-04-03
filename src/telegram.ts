@@ -28,7 +28,7 @@ export async function sendTelegram(message: string): Promise<void> {
       body: JSON.stringify({
         chat_id: chatId,
         text: chunk,
-        parse_mode: "Markdown",
+        parse_mode: "HTML",
       }),
     });
 
@@ -77,44 +77,51 @@ export function formatTelegramBriefing(
   const lines: string[] = [];
   const now = new Date();
 
-  lines.push(`*\u{1F50D} Morning Briefing*`);
-  lines.push(`_${formatDate(now)}_`);
+  lines.push(`\u{1F50D} <b>Morning Briefing</b>`);
+  lines.push(`<i>${formatDate(now)}</i>`);
   lines.push("");
 
   // Attention Needed (alerts)
   const allAlerts = reports.flatMap((r) => r.alerts);
   if (allAlerts.length > 0) {
-    lines.push("*\u26A0\uFE0F Attention Needed*");
+    lines.push("\u26A0\uFE0F <b>Attention Needed</b>");
     const severityIcon: Record<string, string> = { critical: "\u{1F534}", warning: "\u{1F7E1}", info: "\u{1F535}" };
     for (const alert of allAlerts) {
-      lines.push(`${severityIcon[alert.severity]} ${escapeMd(alert.message)}`);
+      lines.push(`${severityIcon[alert.severity]} ${esc(alert.message)}`);
     }
     lines.push("");
   }
 
-  // Today's Focus — top 3
+  // Today's Focus — top 3 as a table
   const scored = reports
     .filter((r) => r.score)
     .sort((a, b) => b.score!.score - a.score!.score)
     .slice(0, 3);
 
   if (scored.length > 0) {
-    lines.push("*\u{1F3AF} Today's Focus*");
-    scored.forEach((r, i) => {
-      lines.push(`${i + 1}\\. *${escapeMd(r.config.name)}* \\(${r.score!.score.toFixed(2)}\\) \u2014 ${escapeMd(r.score!.reasoning)}`);
-    });
+    lines.push("\u{1F3AF} <b>Today's Focus</b>");
+    lines.push("");
+    const priorityLabel = ["HIGH", "MED", "LOW"];
+    for (let i = 0; i < scored.length; i++) {
+      const r = scored[i];
+      const score = r.score!.score.toFixed(2);
+      const label = priorityLabel[i] || "";
+      lines.push(`${i + 1}. <b>${esc(r.config.name)}</b>  \u{1F4CA} ${score}  \u{1F3F7} ${label}`);
+      lines.push(`   <i>${esc(r.score!.reasoning)}</i>`);
+    }
     lines.push("");
   }
 
-  // Momentum summary
+  // Momentum summary as a compact table
   const active = reports.filter((r) => r.config.status === "active");
   if (active.length > 0) {
     const trendIcon: Record<string, string> = { building: "\u{1F7E2}", steady: "\u{1F7E1}", cooling: "\u{1F7E0}", lost: "\u{1F534}" };
-    lines.push("*\u{1F4C8} Momentum*");
+    lines.push("\u{1F4C8} <b>Momentum</b>");
+    lines.push("");
     for (const r of active) {
       const streak = r.momentum.streak > 0 ? `${r.momentum.streak}d streak` : "";
-      const trend = `${trendIcon[r.momentum.trend]} ${r.momentum.trend}`;
-      lines.push(`${trend} *${escapeMd(r.config.name)}* ${streak}`);
+      const icon = trendIcon[r.momentum.trend];
+      lines.push(`${icon} <b>${esc(r.config.name)}</b> \u2014 ${r.momentum.trend} ${streak}`);
     }
     lines.push("");
   }
@@ -122,12 +129,12 @@ export function formatTelegramBriefing(
   // Parked projects
   const parked = reports.filter((r) => r.config.status === "parked");
   if (parked.length > 0) {
-    lines.push("*\u{1F4A4} Parked*");
+    lines.push("\u{1F4A4} <b>Parked</b>");
     for (const r of parked) {
       const reason = r.config.parkedReason
-        ? ` \u2014 ${escapeMd(r.config.parkedReason)}`
+        ? ` \u2014 <i>${esc(r.config.parkedReason)}</i>`
         : "";
-      lines.push(`\u26AA ${escapeMd(r.config.name)}${reason}`);
+      lines.push(`\u26AA ${esc(r.config.name)}${reason}`);
     }
     lines.push("");
   }
@@ -135,6 +142,9 @@ export function formatTelegramBriefing(
   return lines.join("\n");
 }
 
-function escapeMd(text: string): string {
-  return text.replace(/([_*\[\]()~`>#+\-=|{}.!])/g, "\\$1");
+function esc(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }

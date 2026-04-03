@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-02T14:06:26.898Z",
+  "generatedAt": "2026-04-03T07:46:25.639Z",
   "projects": [
     {
       "name": "offero",
@@ -9,6 +9,7 @@
       "platform": "web",
       "status": "active",
       "description": "Offero is a platform for creating and managing offers for your products and services.",
+      "priority": "high",
       "health": "🟢",
       "git": {
         "hasGit": true,
@@ -23,7 +24,29 @@
         "currentGoal": null,
         "inProgress": [],
         "knownIssues": []
-      }
+      },
+      "momentum": {
+        "streak": 2,
+        "daysSinceLastCommit": 0,
+        "lastSessionCommits": 22,
+        "lastSessionDuration": "4.3 hours",
+        "lastSessionDate": "2026-04-02",
+        "trend": "steady"
+      },
+      "issues": {
+        "total": 0,
+        "bugs": 0
+      },
+      "score": {
+        "score": 0.51,
+        "reasoning": "High priority, steady momentum",
+        "factors": {
+          "priority": 1,
+          "momentum": 0.3,
+          "impact": 0
+        }
+      },
+      "alerts": []
     },
     {
       "name": "viaticus",
@@ -33,6 +56,7 @@
       "platform": "both",
       "status": "active",
       "description": "Client mobile + web app",
+      "priority": "high",
       "health": "🟢",
       "git": {
         "hasGit": true,
@@ -48,6 +72,28 @@
         "inProgress": [],
         "knownIssues": []
       },
+      "momentum": {
+        "streak": 1,
+        "daysSinceLastCommit": 0,
+        "lastSessionCommits": 5,
+        "lastSessionDuration": "3.8 hours",
+        "lastSessionDate": "2026-04-02",
+        "trend": "steady"
+      },
+      "issues": {
+        "total": 1,
+        "bugs": 0
+      },
+      "score": {
+        "score": 0.76,
+        "reasoning": "High priority, steady momentum, 1 open issues",
+        "factors": {
+          "priority": 1,
+          "momentum": 0.3,
+          "impact": 1
+        }
+      },
+      "alerts": [],
       "clientName": "Acme Corp",
       "budget": {
         "total": 50000,
@@ -63,6 +109,7 @@
       "platform": "web",
       "status": "active",
       "description": "Offero is a platform for creating and managing offers for your products and services.",
+      "priority": "low",
       "health": "🟡",
       "git": {
         "hasGit": true,
@@ -77,7 +124,29 @@
         "currentGoal": null,
         "inProgress": [],
         "knownIssues": []
-      }
+      },
+      "momentum": {
+        "streak": 0,
+        "daysSinceLastCommit": 6,
+        "lastSessionCommits": 1,
+        "lastSessionDuration": "single commit",
+        "lastSessionDate": "2026-03-27",
+        "trend": "cooling"
+      },
+      "issues": {
+        "total": 0,
+        "bugs": 0
+      },
+      "score": {
+        "score": 0.4,
+        "reasoning": "Low priority, cooling off",
+        "factors": {
+          "priority": 0.3,
+          "momentum": 0.8,
+          "impact": 0
+        }
+      },
+      "alerts": []
     },
     {
       "name": "onz-webapp",
@@ -87,11 +156,12 @@
       "platform": "web",
       "status": "active",
       "description": "Offero is a platform for creating and managing offers for your products and services.",
+      "priority": "medium",
       "health": "🟢",
       "git": {
         "hasGit": true,
-        "lastCommitDate": "2026-04-02T10:52:48.000Z",
-        "lastCommitMessage": "fix: further reduce building time",
+        "lastCommitDate": "2026-04-03T04:45:42.000Z",
+        "lastCommitMessage": "fix: resolve 502 error by binding to 0.0.0.0 and copying static assets",
         "daysSinceLastCommit": 0,
         "currentBranch": "main",
         "uncommittedChanges": false
@@ -101,7 +171,29 @@
         "currentGoal": null,
         "inProgress": [],
         "knownIssues": []
-      }
+      },
+      "momentum": {
+        "streak": 4,
+        "daysSinceLastCommit": 0,
+        "lastSessionCommits": 1,
+        "lastSessionDuration": "single commit",
+        "lastSessionDate": "2026-04-03",
+        "trend": "building"
+      },
+      "issues": {
+        "total": 0,
+        "bugs": 0
+      },
+      "score": {
+        "score": 0.31,
+        "reasoning": "Medium priority, building momentum — on track",
+        "factors": {
+          "priority": 0.6,
+          "momentum": 0.2,
+          "impact": 0
+        }
+      },
+      "alerts": []
     },
     {
       "name": "vanta - team hub",
@@ -111,12 +203,13 @@
       "platform": "web",
       "status": "active",
       "description": "Offero is a platform for creating and managing offers for your products and services.",
+      "priority": "low",
       "health": "🟢",
       "git": {
         "hasGit": true,
         "lastCommitDate": "2026-04-02T05:50:07.000Z",
         "lastCommitMessage": "chore: trigger Vercel deployment",
-        "daysSinceLastCommit": 0,
+        "daysSinceLastCommit": 1,
         "currentBranch": "main",
         "uncommittedChanges": false
       },
@@ -125,7 +218,29 @@
         "currentGoal": null,
         "inProgress": [],
         "knownIssues": []
-      }
+      },
+      "momentum": {
+        "streak": 1,
+        "daysSinceLastCommit": 1,
+        "lastSessionCommits": 1,
+        "lastSessionDuration": "single commit",
+        "lastSessionDate": "2026-04-02",
+        "trend": "steady"
+      },
+      "issues": {
+        "total": 0,
+        "bugs": 0
+      },
+      "score": {
+        "score": 0.22,
+        "reasoning": "Low priority, steady momentum",
+        "factors": {
+          "priority": 0.3,
+          "momentum": 0.3,
+          "impact": 0
+        }
+      },
+      "alerts": []
     },
     {
       "name": "vanta - workshop management",
@@ -135,12 +250,13 @@
       "platform": "web",
       "status": "active",
       "description": "Offero is a platform for creating and managing offers for your products and services.",
+      "priority": "low",
       "health": "🔴",
       "git": {
         "hasGit": true,
         "lastCommitDate": "2026-03-16T06:33:07.000Z",
         "lastCommitMessage": "Merge pull request #3 from kit9898/kit",
-        "daysSinceLastCommit": 17,
+        "daysSinceLastCommit": 18,
         "currentBranch": "main",
         "uncommittedChanges": false
       },
@@ -149,7 +265,29 @@
         "currentGoal": null,
         "inProgress": [],
         "knownIssues": []
-      }
+      },
+      "momentum": {
+        "streak": 0,
+        "daysSinceLastCommit": 18,
+        "lastSessionCommits": 2,
+        "lastSessionDuration": "single commit",
+        "lastSessionDate": "2026-03-16",
+        "trend": "lost"
+      },
+      "issues": {
+        "total": 0,
+        "bugs": 0
+      },
+      "score": {
+        "score": 0.47,
+        "reasoning": "Low priority, momentum lost — needs intervention",
+        "factors": {
+          "priority": 0.3,
+          "momentum": 1,
+          "impact": 0
+        }
+      },
+      "alerts": []
     }
   ]
 }

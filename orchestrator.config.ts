@@ -8,7 +8,7 @@ const config: OrchestratorConfig = {
   },
   projects: [
     {
-      name: "offero",
+      name: "Offero",
       repo: "leongcheefai/offero",
       branch: "master",
       type: "saas",
@@ -18,7 +18,7 @@ const config: OrchestratorConfig = {
       priority: "high",
     },
     {
-      name: "viaticus",
+      name: "Viaticus",
       repo: "first-to-fly/firsttofly-garage-viaticus",
       branch: "production",
       type: "client",
@@ -37,10 +37,10 @@ const config: OrchestratorConfig = {
       platform: "web",
       status: "active",
       description: "Offero is a platform for creating and managing offers for your products and services.",
-      priority: "medium",
+      priority: "low",
     },
     {
-      name: "onz-webapp",
+      name: "Onz",
       repo: "weikaikhoo/onz-webapp",
       branch: "main",
       type: "saas",
@@ -50,7 +50,7 @@ const config: OrchestratorConfig = {
       priority: "medium",
     },
     {
-      name: "vanta - team hub",
+      name: "Vanta - Team Hub",
       repo: "kit9898/team-hub-",
       branch: "main",
       type: "saas",
@@ -60,7 +60,7 @@ const config: OrchestratorConfig = {
       priority: "low",
     },
     {
-      name: "vanta - workshop management",
+      name: "Vanta - Workshop Management",
       repo: "kit9898/workshop-management-system",
       branch: "main",
       type: "saas",
