@@ -15,6 +15,7 @@ const config: OrchestratorConfig = {
       platform: "web",
       status: "active",
       description: "Offero is a platform for creating and managing offers for your products and services.",
+      priority: "high",
     },
     {
       name: "viaticus",
@@ -24,6 +25,7 @@ const config: OrchestratorConfig = {
       platform: "both",
       status: "active",
       description: "Client mobile + web app",
+      priority: "high",
       clientName: "Acme Corp",
       budget: { total: 50000, invoiced: 25000, currency: "USD" },
     },
@@ -35,6 +37,7 @@ const config: OrchestratorConfig = {
       platform: "web",
       status: "active",
       description: "Offero is a platform for creating and managing offers for your products and services.",
+      priority: "medium",
     },
     {
       name: "onz-webapp",
@@ -44,6 +47,7 @@ const config: OrchestratorConfig = {
       platform: "web",
       status: "active",
       description: "Offero is a platform for creating and managing offers for your products and services.",
+      priority: "medium",
     },
     {
       name: "vanta - team hub",
@@ -53,6 +57,7 @@ const config: OrchestratorConfig = {
       platform: "web",
       status: "active",
       description: "Offero is a platform for creating and managing offers for your products and services.",
+      priority: "low",
     },
     {
       name: "vanta - workshop management",
@@ -62,6 +67,7 @@ const config: OrchestratorConfig = {
       platform: "web",
       status: "active",
       description: "Offero is a platform for creating and managing offers for your products and services.",
+      priority: "low",
     },
     // {
     //   name: "old-tool",
