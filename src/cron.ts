@@ -1,7 +1,8 @@
 import { loadConfig } from "./config";
 import { scanAll } from "./cli";
 import { generateBriefing, generateRegistry } from "./briefing";
-import { sendTelegram, formatTelegramBriefing } from "./telegram";
+import { sendTelegram } from "./telegram";
+import { generateAIBriefing } from "./ai-briefing";
 
 async function main() {
   const start = new Date();
@@ -17,9 +18,9 @@ async function main() {
   await Bun.write(`${outputDir}/registry.json`, JSON.stringify(registry, null, 2));
 
   if (config.telegram?.enabled) {
-    const message = formatTelegramBriefing(reports, config);
+    const message = await generateAIBriefing(registry, config);
     await sendTelegram(message);
-    console.log("[cron] Telegram notification sent");
+    console.log("[cron] AI Telegram notification sent");
   }
 
   const end = new Date();
