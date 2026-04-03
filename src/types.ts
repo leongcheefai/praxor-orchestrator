@@ -76,6 +76,12 @@ export interface Alert {
   message: string;
 }
 
+export interface StatusNote {
+  project: string;       // normalized project name
+  message: string;
+  timestamp: string;     // ISO 8601
+}
+
 export interface ProjectReport {
   config: ProjectConfig;
   git: GitInfo;
@@ -85,4 +91,5 @@ export interface ProjectReport {
   issues: IssueInfo;
   score?: ProjectScore;
   alerts: Alert[];
+  statusNotes?: StatusNote[];
 }

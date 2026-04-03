@@ -7,6 +7,9 @@
     "briefing": "bun run src/cli.ts briefing",
     "sync": "bun run src/cli.ts sync",
     "notify": "bun run src/cli.ts notify",
+    "update": "bun run src/cli.ts update",
+    "setup-webhook": "bun run src/cli.ts setup-webhook",
+    "poll": "bun run src/cli.ts poll",
     "server": "bun run src/server.ts",
     "cron": "bun run src/cron.ts"
   }

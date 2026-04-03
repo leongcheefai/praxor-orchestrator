@@ -56,6 +56,18 @@ export function generateBriefing(reports: ProjectReport[], config: OrchestratorC
     lines.push("");
   }
 
+  // Status Notes
+  const allNotes = reports.flatMap((r) => r.statusNotes ?? []);
+  if (allNotes.length > 0) {
+    lines.push("## Status Notes");
+    lines.push("");
+    for (const note of allNotes) {
+      const ts = new Date(note.timestamp).toLocaleString();
+      lines.push(`- **${note.project}**: ${note.message} _(${ts})_`);
+    }
+    lines.push("");
+  }
+
   // Existing alerts (stale, uncommitted, missing CLAUDE.md)
   const stale = reports.filter(
     (r) => r.config.status === "active" && r.git.hasGit && r.git.daysSinceLastCommit > config.stalenessThresholdDays
@@ -117,6 +129,13 @@ export function generateBriefing(reports: ProjectReport[], config: OrchestratorC
         }
       } else {
         lines.push(`- **\u2753 No git repository found**`);
+      }
+      if (r.statusNotes && r.statusNotes.length > 0) {
+        lines.push(`- **Status notes:**`);
+        for (const note of r.statusNotes) {
+          const ts = new Date(note.timestamp).toLocaleString();
+          lines.push(`  - ${note.message} _(${ts})_`);
+        }
       }
       if (r.claudeMd.exists) {
         if (r.claudeMd.currentGoal) {
@@ -196,6 +215,7 @@ export function generateRegistry(reports: ProjectReport[]): object {
         ? { score: r.score.score, reasoning: r.score.reasoning, factors: r.score.factors }
         : null,
       alerts: r.alerts.map((a) => a.message),
+      ...(r.statusNotes && r.statusNotes.length > 0 && { statusNotes: r.statusNotes }),
       ...(r.config.clientName && { clientName: r.config.clientName }),
       ...(r.config.budget && { budget: r.config.budget }),
       ...(r.config.parkedReason && { parkedReason: r.config.parkedReason }),

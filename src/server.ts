@@ -1,7 +1,10 @@
 import { loadConfig } from "./config";
 import { scanAll } from "./cli";
 import { generateBriefing, generateRegistry } from "./briefing";
-import { sendTelegram, formatTelegramBriefing } from "./telegram";
+import { sendTelegram, formatTelegramBriefing, sendTelegramReply } from "./telegram";
+import { parseTelegramUpdate, handleWebhookCommand } from "./webhook";
+import { resolve } from "path";
+import { homedir } from "os";
 
 let lastSync: string | null = null;
 let lastReports: any[] = [];
@@ -46,6 +49,32 @@ Bun.serve({
       return new Response(lastBriefing, {
         headers: { "Content-Type": "text/plain; charset=utf-8" },
       });
+    }
+
+    if (url.pathname === "/webhook/telegram" && req.method === "POST") {
+      try {
+        const body = await req.json();
+        const msg = parseTelegramUpdate(body);
+        if (!msg) return new Response("ok");
+
+        // Validate chat ID
+        const expectedChatId = process.env.TELEGRAM_CHAT_ID;
+        if (!expectedChatId || msg.chatId.toString() !== expectedChatId) {
+          return new Response("ok");
+        }
+
+        const config = await loadConfig();
+        const outputDir = config.outputDir.startsWith("~")
+          ? resolve(homedir(), config.outputDir.slice(2))
+          : resolve(config.outputDir);
+
+        const reply = await handleWebhookCommand(msg.text, config, outputDir);
+        await sendTelegramReply(reply, msg.messageId).catch(() => {});
+
+        return new Response("ok");
+      } catch {
+        return new Response("ok");
+      }
     }
 
     if (url.pathname === "/trigger") {

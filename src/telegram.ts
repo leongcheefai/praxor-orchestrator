@@ -39,6 +39,83 @@ export async function sendTelegram(message: string): Promise<void> {
   }
 }
 
+export async function sendTelegramReply(message: string, replyToMessageId: number): Promise<void> {
+  const { token, chatId } = getCredentials();
+  const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+  const chunks = splitMessage(message);
+
+  for (let i = 0; i < chunks.length; i++) {
+    const payload: Record<string, unknown> = {
+      chat_id: chatId,
+      text: chunks[i],
+      parse_mode: "HTML",
+    };
+    // Only reply to the original message on the first chunk
+    if (i === 0) {
+      payload.reply_to_message_id = replyToMessageId;
+    }
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const body = await res.text();
+      throw new Error(`Telegram API error (${res.status}): ${body}`);
+    }
+  }
+}
+
+export async function deleteWebhook(): Promise<void> {
+  const { token } = getCredentials();
+  const res = await fetch(`https://api.telegram.org/bot${token}/deleteWebhook`, {
+    method: "POST",
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Telegram deleteWebhook error (${res.status}): ${body}`);
+  }
+}
+
+export async function getUpdates(offset?: number): Promise<any[]> {
+  const { token } = getCredentials();
+  const params = new URLSearchParams({ timeout: "30" });
+  if (offset !== undefined) params.set("offset", String(offset));
+
+  const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates?${params}`);
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Telegram getUpdates error (${res.status}): ${body}`);
+  }
+
+  const data = (await res.json()) as { ok: boolean; result: any[] };
+  return data.ok ? data.result : [];
+}
+
+export async function setWebhook(webhookUrl: string): Promise<void> {
+  const { token } = getCredentials();
+  const url = `https://api.telegram.org/bot${token}/setWebhook`;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url: webhookUrl }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Telegram setWebhook error (${res.status}): ${body}`);
+  }
+
+  const data = (await res.json()) as { ok: boolean; description?: string };
+  if (!data.ok) {
+    throw new Error(`Telegram setWebhook failed: ${data.description}`);
+  }
+}
+
 function splitMessage(message: string): string[] {
   if (message.length <= TELEGRAM_MAX_LENGTH) return [message];
 
@@ -122,6 +199,17 @@ export function formatTelegramBriefing(
       const streak = r.momentum.streak > 0 ? `${r.momentum.streak}d streak` : "";
       const icon = trendIcon[r.momentum.trend];
       lines.push(`${icon} <b>${esc(r.config.name)}</b> \u2014 ${r.momentum.trend} ${streak}`);
+    }
+    lines.push("");
+  }
+
+  // Status Notes
+  const allNotes = reports.flatMap((r) => r.statusNotes ?? []);
+  if (allNotes.length > 0) {
+    lines.push("\u{1F4DD} <b>Status Notes</b>");
+    lines.push("");
+    for (const note of allNotes) {
+      lines.push(`\u2022 <b>${esc(note.project)}</b>: ${esc(note.message)}`);
     }
     lines.push("");
   }
