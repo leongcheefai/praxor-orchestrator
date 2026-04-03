@@ -1,4 +1,4 @@
-import type { ProjectConfig, GitInfo, ClaudeMdInfo } from "./types";
+import type { ProjectConfig, GitInfo, ClaudeMdInfo, IssueInfo } from "./types";
 
 const GITHUB_API = "https://api.github.com";
 
@@ -42,7 +42,7 @@ export async function scanGit(project: ProjectConfig): Promise<GitInfo> {
       return noGitInfo();
     }
 
-    const url = `${GITHUB_API}/repos/${project.repo}/commits?sha=${branch}&per_page=5`;
+    const url = `${GITHUB_API}/repos/${project.repo}/commits?sha=${branch}&per_page=30`;
     const res = await fetch(url, { headers: getHeaders() });
 
     if (res.status === 401) {
@@ -178,6 +178,30 @@ function parseClaudeMd(content: string): ClaudeMdInfo {
   }
 
   return { exists: true, currentGoal, inProgress, knownIssues };
+}
+
+export async function scanIssues(project: ProjectConfig): Promise<IssueInfo> {
+  try {
+    const url = `${GITHUB_API}/repos/${project.repo}/issues?state=open&per_page=100`;
+    const res = await fetch(url, { headers: getHeaders() });
+
+    if (!res.ok) {
+      console.warn(`Failed to fetch issues for ${project.repo} (${res.status})`);
+      return { total: 0, bugs: 0 };
+    }
+
+    const issues = (await res.json()) as any[];
+    // GitHub API returns PRs in issues endpoint — filter them out
+    const realIssues = issues.filter((i: any) => !i.pull_request);
+    const bugs = realIssues.filter((i: any) =>
+      i.labels?.some((l: any) => l.name.toLowerCase() === "bug")
+    );
+
+    return { total: realIssues.length, bugs: bugs.length };
+  } catch (err) {
+    console.warn(`Failed to fetch issues for ${project.repo}:`, (err as Error).message);
+    return { total: 0, bugs: 0 };
+  }
 }
 
 function noGitInfo(): GitInfo {
