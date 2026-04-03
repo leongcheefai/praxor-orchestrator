@@ -20,7 +20,13 @@
 | Onz | 4 days | 1 commits, single commit (2026-04-03) | 🟢 building |
 | Vanta - Team Hub | 1 days | 1 commits, single commit (2026-04-02) | 🟡 steady |
 | Vanta - Workshop Management | 0 days | 2 commits, single commit (2026-03-16) | 🔴 lost |
-| Praxor Orchestrator | 1 days | 10 commits, 2.7 hours (2026-04-03) | 🟡 steady |
+| Praxor Orchestrator | 1 days | 12 commits, 3.0 hours (2026-04-03) | 🟡 steady |
+
+## Status Notes
+
+- **Offero**: shipped auth feature _(4/3/2026, 4:09:05 PM)_
+- **Offero**: shipped auth feature _(4/3/2026, 4:09:06 PM)_
+- **Viaticus**: watch Safari Portal video on how to build the itinerary builder _(4/3/2026, 4:29:45 PM)_
 
 ## Alerts
 
@@ -39,6 +45,8 @@
 - **Budget:** USD 25,000 / 50,000 invoiced (USD 25,000 remaining)
 - **Branch:** `production`
 - **Last commit:** 2026-04-02 (0d ago) - fix: resources not able to update
+- **Status notes:**
+  - watch Safari Portal video on how to build the itinerary builder _(4/3/2026, 4:29:45 PM)_
 
 ### 🟢 Offero
 
@@ -47,6 +55,9 @@
 - **Type:** saas | **Platform:** web | **Priority:** high
 - **Branch:** `master`
 - **Last commit:** 2026-04-02 (0d ago) - fix: wrong og imag
+- **Status notes:**
+  - shipped auth feature _(4/3/2026, 4:09:05 PM)_
+  - shipped auth feature _(4/3/2026, 4:09:06 PM)_
 
 ### 🔴 Vanta - Workshop Management
 
@@ -70,7 +81,7 @@
 
 - **Type:** micro-tool | **Platform:** cli | **Priority:** medium
 - **Branch:** `master`
-- **Last commit:** 2026-04-03 (0d ago) - fix: telegram delivery
+- **Last commit:** 2026-04-03 (0d ago) - feat: add update project status via telegram
 
 ### 🟢 Onz
 

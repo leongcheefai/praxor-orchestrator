@@ -29,23 +29,26 @@ export async function handleWebhookCommand(
   config: OrchestratorConfig,
   outputDir: string
 ): Promise<string> {
+  // Strip @botname suffix from commands (e.g., /update@MyBot -> /update)
+  const normalized = text.replace(/^(\/\w+)@\w+/, "$1");
+
   // /update <ProjectName> <message>
-  if (text.startsWith("/update ")) {
-    return handleUpdate(text.slice(8).trim(), config, outputDir);
+  if (normalized.startsWith("/update ")) {
+    return handleUpdate(normalized.slice(8).trim(), config, outputDir);
   }
 
   // /notes
-  if (text === "/notes" || text.startsWith("/notes")) {
+  if (normalized === "/notes") {
     return handleNotes(outputDir);
   }
 
   // /clear <ProjectName>
-  if (text.startsWith("/clear ")) {
-    return handleClear(text.slice(7).trim(), config, outputDir);
+  if (normalized.startsWith("/clear ")) {
+    return handleClear(normalized.slice(7).trim(), config, outputDir);
   }
 
   // /status
-  if (text === "/status" || text.startsWith("/status")) {
+  if (normalized === "/status") {
     return handleStatus(outputDir);
   }
 
@@ -57,28 +60,52 @@ async function handleUpdate(
   config: OrchestratorConfig,
   outputDir: string
 ): Promise<string> {
-  // First word is project name, rest is message
-  const spaceIdx = args.indexOf(" ");
-  if (spaceIdx === -1) {
+  if (!args.includes(" ")) {
     return "Usage: /update <project> <message>\nExample: /update Offero shipped auth feature";
   }
 
-  const projectQuery = args.slice(0, spaceIdx);
-  const message = args.slice(spaceIdx + 1).trim();
+  // Try matching the longest project name first (e.g., "Praxor Orchestrator" before "Praxor")
+  const match = resolveProjectFromStart(args, config);
+  if (!match) {
+    const names = config.projects.map((p) => p.name).join(", ");
+    return `Could not resolve project. Available: ${names}`;
+  }
 
+  const message = args.slice(match.matchLength).trim();
   if (!message) {
     return "Please provide a status message.";
   }
 
-  const projectName = resolveProjectName(projectQuery, config);
-  if (!projectName) {
-    const names = config.projects.map((p) => p.name).join(", ");
-    return `Could not resolve project "${projectQuery}". Available: ${names}`;
+  const note = await addStatusNote(outputDir, match.name, message);
+  const time = new Date(note.timestamp).toLocaleTimeString();
+  return `\u2705 Noted for <b>${esc(match.name)}</b>:\n"${esc(message)}"\n<i>${time}</i>`;
+}
+
+function resolveProjectFromStart(
+  text: string,
+  config: OrchestratorConfig
+): { name: string; matchLength: number } | null {
+  const lower = text.toLowerCase();
+
+  // Sort project names by length descending so longer names match first
+  const sorted = [...config.projects].sort((a, b) => b.name.length - a.name.length);
+
+  for (const project of sorted) {
+    const nameLower = project.name.toLowerCase();
+    // Check if text starts with the project name followed by a space
+    if (lower.startsWith(nameLower + " ") || lower === nameLower) {
+      return { name: project.name, matchLength: project.name.length };
+    }
   }
 
-  const note = await addStatusNote(outputDir, projectName, message);
-  const time = new Date(note.timestamp).toLocaleTimeString();
-  return `\u2705 Noted for <b>${esc(projectName)}</b>:\n"${esc(message)}"\n<i>${time}</i>`;
+  // Fallback: try single-word partial match
+  const firstWord = text.split(" ")[0];
+  const resolved = resolveProjectName(firstWord, config);
+  if (resolved) {
+    return { name: resolved, matchLength: firstWord.length };
+  }
+
+  return null;
 }
 
 async function handleNotes(outputDir: string): Promise<string> {
@@ -107,7 +134,9 @@ async function handleClear(
     return "Usage: /clear <project>";
   }
 
-  const projectName = resolveProjectName(projectQuery, config);
+  // Try full name match first, then fall back to partial
+  const match = resolveProjectFromStart(projectQuery, config);
+  const projectName = match?.name ?? resolveProjectName(projectQuery, config);
   if (!projectName) {
     const names = config.projects.map((p) => p.name).join(", ");
     return `Could not resolve project "${projectQuery}". Available: ${names}`;
