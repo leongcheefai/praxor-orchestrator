@@ -21,6 +21,9 @@ export interface OrchestratorConfig {
   outputDir: string;
   stalenessThresholdDays: number;
   telegram?: TelegramConfig;
+  ai?: {
+    model: string;
+  };
   projects: ProjectConfig[];
 }
 
