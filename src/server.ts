@@ -22,6 +22,37 @@ async function runSync() {
   return { reports, config };
 }
 
+// Schedule daily cron job (same as cron.ts) at 1:00 AM UTC
+function scheduleDailyCron() {
+  const now = new Date();
+  const next = new Date(now);
+  next.setUTCHours(1, 0, 0, 0);
+  if (next <= now) next.setUTCDate(next.getUTCDate() + 1);
+  const delay = next.getTime() - now.getTime();
+
+  setTimeout(async () => {
+    try {
+      console.log(`[cron] started at ${new Date().toISOString()}`);
+      const { reports, config } = await runSync();
+      const registry = generateRegistry(reports);
+
+      if (config.telegram?.enabled) {
+        const message = await generateAIBriefing(registry, config);
+        await sendTelegram(message);
+        console.log("[cron] AI Telegram notification sent");
+      }
+      console.log(`[cron] finished at ${new Date().toISOString()}`);
+    } catch (err) {
+      console.error("[cron] Error:", (err as Error).message);
+    }
+    scheduleDailyCron(); // schedule next run
+  }, delay);
+
+  console.log(`[cron] next run at ${next.toISOString()} (in ${Math.round(delay / 60000)}m)`);
+}
+
+scheduleDailyCron();
+
 Bun.serve({
   port,
   async fetch(req) {
