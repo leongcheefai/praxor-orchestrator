@@ -13,7 +13,50 @@ export function generateBriefing(reports: ProjectReport[], config: OrchestratorC
   lines.push(`# Morning Briefing - ${dateStr}`);
   lines.push("");
 
-  // Alerts
+  // Attention Needed (alerts)
+  const allAlerts = reports.flatMap((r) => r.alerts);
+  if (allAlerts.length > 0) {
+    lines.push("## Attention Needed");
+    lines.push("");
+    const severityIcon: Record<string, string> = { critical: "\u{1F534}", warning: "\u{1F7E1}", info: "\u{1F535}" };
+    for (const alert of allAlerts) {
+      lines.push(`- ${severityIcon[alert.severity]} ${alert.message}`);
+    }
+    lines.push("");
+  }
+
+  // Today's Focus (Ranked)
+  const scored = reports
+    .filter((r) => r.score)
+    .sort((a, b) => b.score!.score - a.score!.score);
+
+  if (scored.length > 0) {
+    lines.push("## Today's Focus (Ranked)");
+    lines.push("");
+    scored.forEach((r, i) => {
+      lines.push(`${i + 1}. **${r.config.name}** (score: ${r.score!.score.toFixed(2)}) \u2014 ${r.score!.reasoning}`);
+    });
+    lines.push("");
+  }
+
+  // Momentum table
+  const active = reports.filter((r) => r.config.status === "active");
+  if (active.length > 0) {
+    const trendIcon: Record<string, string> = { building: "\u{1F7E2}", steady: "\u{1F7E1}", cooling: "\u{1F7E0}", lost: "\u{1F534}" };
+    lines.push("## Momentum");
+    lines.push("");
+    lines.push("| Project | Streak | Last Session | Trend |");
+    lines.push("|---------|--------|-------------|-------|");
+    for (const r of active) {
+      const session = r.momentum.lastSessionCommits > 0
+        ? `${r.momentum.lastSessionCommits} commits, ${r.momentum.lastSessionDuration} (${r.momentum.lastSessionDate})`
+        : "no activity";
+      lines.push(`| ${r.config.name} | ${r.momentum.streak} days | ${session} | ${trendIcon[r.momentum.trend]} ${r.momentum.trend} |`);
+    }
+    lines.push("");
+  }
+
+  // Existing alerts (stale, uncommitted, missing CLAUDE.md)
   const stale = reports.filter(
     (r) => r.config.status === "active" && r.git.hasGit && r.git.daysSinceLastCommit > config.stalenessThresholdDays
   );
@@ -39,25 +82,24 @@ export function generateBriefing(reports: ProjectReport[], config: OrchestratorC
     lines.push("");
   }
 
-  // Active projects sorted by recency
-  const active = reports
-    .filter((r) => r.config.status === "active")
-    .sort((a, b) => {
-      if (!a.git.lastCommitDate) return 1;
-      if (!b.git.lastCommitDate) return -1;
-      return b.git.lastCommitDate.getTime() - a.git.lastCommitDate.getTime();
-    });
+  // Active projects sorted by score (or recency as fallback)
+  const activeSorted = [...active].sort((a, b) => {
+    if (a.score && b.score) return b.score.score - a.score.score;
+    if (!a.git.lastCommitDate) return 1;
+    if (!b.git.lastCommitDate) return -1;
+    return b.git.lastCommitDate.getTime() - a.git.lastCommitDate.getTime();
+  });
 
-  if (active.length > 0) {
+  if (activeSorted.length > 0) {
     lines.push("## Active Projects");
     lines.push("");
 
-    for (const r of active) {
+    for (const r of activeSorted) {
       lines.push(`### ${r.health} ${r.config.name}`);
       lines.push("");
       lines.push(`> ${r.config.description}`);
       lines.push("");
-      lines.push(`- **Type:** ${r.config.type} | **Platform:** ${r.config.platform}`);
+      lines.push(`- **Type:** ${r.config.type} | **Platform:** ${r.config.platform} | **Priority:** ${r.config.priority ?? "medium"}`);
       if (r.config.clientName) {
         lines.push(`- **Client:** ${r.config.clientName}`);
       }
@@ -111,24 +153,6 @@ export function generateBriefing(reports: ProjectReport[], config: OrchestratorC
     lines.push("");
   }
 
-  // Daily focus
-  lines.push("## Daily Focus");
-  lines.push("");
-  if (active.length > 0) {
-    const top = active[0];
-    lines.push(`Suggested focus: **${top.config.name}**`);
-    if (top.claudeMd.currentGoal) {
-      lines.push(`\u{1F3AF} ${top.claudeMd.currentGoal}`);
-    }
-    if (uncommitted.length > 0) {
-      lines.push("");
-      lines.push(`\u26A0\uFE0F Don't forget to commit changes in: ${uncommitted.map((r) => r.config.name).join(", ")}`);
-    }
-  } else {
-    lines.push("No active projects. Add projects to orchestrator.config.ts.");
-  }
-  lines.push("");
-
   return lines.join("\n");
 }
 
@@ -143,6 +167,7 @@ export function generateRegistry(reports: ProjectReport[]): object {
       platform: r.config.platform,
       status: r.config.status,
       description: r.config.description,
+      priority: r.config.priority ?? "medium",
       health: r.health,
       git: {
         hasGit: r.git.hasGit,
@@ -158,6 +183,19 @@ export function generateRegistry(reports: ProjectReport[]): object {
         inProgress: r.claudeMd.inProgress,
         knownIssues: r.claudeMd.knownIssues,
       },
+      momentum: {
+        streak: r.momentum.streak,
+        daysSinceLastCommit: r.momentum.daysSinceLastCommit,
+        lastSessionCommits: r.momentum.lastSessionCommits,
+        lastSessionDuration: r.momentum.lastSessionDuration,
+        lastSessionDate: r.momentum.lastSessionDate,
+        trend: r.momentum.trend,
+      },
+      issues: r.issues,
+      score: r.score
+        ? { score: r.score.score, reasoning: r.score.reasoning, factors: r.score.factors }
+        : null,
+      alerts: r.alerts.map((a) => a.message),
       ...(r.config.clientName && { clientName: r.config.clientName }),
       ...(r.config.budget && { budget: r.config.budget }),
       ...(r.config.parkedReason && { parkedReason: r.config.parkedReason }),

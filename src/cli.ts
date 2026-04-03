@@ -3,11 +3,14 @@ import { join } from "path";
 import { homedir } from "os";
 import { resolve } from "path";
 import { loadConfig } from "./config";
-import { scanGit, scanClaudeMd } from "./scanner";
+import { scanGit, scanClaudeMd, scanIssues } from "./scanner";
 import { computeHealth } from "./health";
 import { printTable } from "./table";
 import { generateBriefing, generateRegistry } from "./briefing";
 import { sendTelegram, formatTelegramBriefing } from "./telegram";
+import { computeMomentum } from "./momentum";
+import { computeScores } from "./scoring";
+import { evaluateAlerts } from "./alerts";
 import type { ProjectReport } from "./types";
 
 function expandPath(p: string): string {
@@ -30,9 +33,27 @@ export async function scanAll(): Promise<{ reports: ProjectReport[]; outputDir: 
       const git = await scanGit(project);
       const claudeMd = await scanClaudeMd(project, git.currentBranch || undefined);
       const health = computeHealth({ config: project, git });
-      return { config: project, git, claudeMd, health };
+      const momentum = computeMomentum(git);
+      const issues = await scanIssues(project);
+      const alerts = evaluateAlerts({
+        config: project,
+        git,
+        claudeMd,
+        health,
+        momentum,
+        issues,
+        alerts: [],
+      });
+      return { config: project, git, claudeMd, health, momentum, issues, alerts };
     })
   );
+
+  // Compute scores across all reports and attach to each report
+  const scores = computeScores(reports);
+  for (const score of scores) {
+    const report = reports.find((r) => r.config.name === score.project);
+    if (report) report.score = score;
+  }
 
   return { reports, outputDir };
 }
