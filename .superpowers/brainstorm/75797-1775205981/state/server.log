@@ -1,8 +1,0 @@
-{"type":"server-started","port":65029,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:65029","screen_dir":"/Users/leongcheefai/orchestrator/.superpowers/brainstorm/75797-1775205981/content","state_dir":"/Users/leongcheefai/orchestrator/.superpowers/brainstorm/75797-1775205981/state"}
-{"type":"screen-added","file":"/Users/leongcheefai/orchestrator/.superpowers/brainstorm/75797-1775205981/content/approaches.html"}
-{"source":"user-event","type":"click","text":"B\n    \n      Prompt Template — Separate prompt file + module\n      Same as A, but the system prompt lives in a .md file (e.g., prompts/briefing.md) that gets loaded at runtime. The module handles API call + context injection.\n      \n        scanner → scoring → registry.json → ai-briefing.ts + prompts/briefing.md → telegram\n      \n      \n        ProsPrompt is easy to edit and iterate on without touching codeCould version/swap prompts for different briefing stylesSame minimal code changes as A\n        ConsExtra file to manage — slightly more moving parts","choice":"b","id":null,"timestamp":1775206277970}
-{"type":"screen-added","file":"/Users/leongcheefai/orchestrator/.superpowers/brainstorm/75797-1775205981/content/architecture.html"}
-{"type":"screen-added","file":"/Users/leongcheefai/orchestrator/.superpowers/brainstorm/75797-1775205981/content/prompt-design.html"}
-{"type":"screen-added","file":"/Users/leongcheefai/orchestrator/.superpowers/brainstorm/75797-1775205981/content/module-design.html"}
-{"type":"screen-added","file":"/Users/leongcheefai/orchestrator/.superpowers/brainstorm/75797-1775205981/content/integration.html"}
-{"type":"screen-added","file":"/Users/leongcheefai/orchestrator/.superpowers/brainstorm/75797-1775205981/content/waiting.html"}
