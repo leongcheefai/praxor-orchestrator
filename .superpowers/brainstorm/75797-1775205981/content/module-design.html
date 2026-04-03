@@ -1,0 +1,69 @@
+<h2>Design — Module Design</h2>
+<p class="subtitle">Section 3 of 4: What <code>ai-briefing.ts</code> does internally</p>
+
+<div class="mockup">
+  <div class="mockup-header">src/ai-briefing.ts — Public API</div>
+  <div class="mockup-body" style="padding:24px;font-family:monospace;font-size:13px;line-height:2">
+    <span style="color:#c084fc">export async function</span> <span style="color:#facc15">generateAIBriefing</span>(<br>
+    &nbsp;&nbsp;registry: <span style="color:#60a5fa">object</span>,<br>
+    &nbsp;&nbsp;config: <span style="color:#60a5fa">OrchestratorConfig</span><br>
+    ): <span style="color:#60a5fa">Promise&lt;string&gt;</span><br><br>
+    <span style="opacity:0.5">// Returns Telegram-ready HTML string</span>
+  </div>
+</div>
+
+<div style="margin-top:24px">
+  <h3>Internal Steps</h3>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <div style="min-width:32px;height:32px;background:#422006;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#facc15;font-weight:700;font-size:14px">1</div>
+      <div>
+        <div style="font-weight:600">Load prompt template</div>
+        <div style="opacity:0.7;font-size:13px;margin-top:4px">Read <code>prompts/briefing.md</code> from disk relative to project root</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <div style="min-width:32px;height:32px;background:#422006;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#facc15;font-weight:700;font-size:14px">2</div>
+      <div>
+        <div style="font-weight:600">Build user message</div>
+        <div style="opacity:0.7;font-size:13px;margin-top:4px">Compose <code>Today is {date}.\n\n{registry JSON}</code></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <div style="min-width:32px;height:32px;background:#422006;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#facc15;font-weight:700;font-size:14px">3</div>
+      <div>
+        <div style="font-weight:600">Call Claude API</div>
+        <div style="opacity:0.7;font-size:13px;margin-top:4px">Direct <code>fetch</code> to <code>api.anthropic.com/v1/messages</code> — no SDK dependency needed since Bun has native fetch</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <div style="min-width:32px;height:32px;background:#422006;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#facc15;font-weight:700;font-size:14px">4</div>
+      <div>
+        <div style="font-weight:600">Extract text response</div>
+        <div style="opacity:0.7;font-size:13px;margin-top:4px">Pull <code>content[0].text</code> from API response, return as-is</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px">
+  <h3>Decisions</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:16px">
+      <div style="font-weight:600;color:#4ade80;margin-bottom:8px">Direct fetch, no SDK</div>
+      <div style="font-size:13px;opacity:0.8">The Anthropic SDK is nice but adds a dependency. The API is a single POST — raw fetch keeps things zero-dependency and consistent with how <code>telegram.ts</code> already works.</div>
+    </div>
+    <div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:16px">
+      <div style="font-weight:600;color:#4ade80;margin-bottom:8px">API key from env</div>
+      <div style="font-size:13px;opacity:0.8"><code>ANTHROPIC_API_KEY</code> env var — same pattern as <code>TELEGRAM_BOT_TOKEN</code>. Config only holds the model name.</div>
+    </div>
+    <div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:16px">
+      <div style="font-weight:600;color:#4ade80;margin-bottom:8px">No retry logic</div>
+      <div style="font-size:13px;opacity:0.8">If the API fails, throw. The CLI already logs errors. Don't add complexity for a daily cron that can just run again.</div>
+    </div>
+    <div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:16px">
+      <div style="font-weight:600;color:#4ade80;margin-bottom:8px">max_tokens: 1024</div>
+      <div style="font-size:13px;opacity:0.8">Keeps output concise and cost negligible. Telegram limit is 4096 chars — 1024 tokens ≈ ~800 chars, well within bounds.</div>
+    </div>
+  </div>
+</div>

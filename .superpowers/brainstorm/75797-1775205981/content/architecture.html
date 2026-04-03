@@ -1,0 +1,73 @@
+<h2>Design — Architecture Overview</h2>
+<p class="subtitle">Section 1 of 4: How the pieces fit together</p>
+
+<div class="mockup">
+  <div class="mockup-header">Pipeline Flow</div>
+  <div class="mockup-body" style="padding:24px;font-family:monospace;font-size:14px;line-height:2.2">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="background:#334155;padding:6px 14px;border-radius:6px">scanner.ts</span>
+        <span style="opacity:0.4">→</span>
+        <span style="background:#334155;padding:6px 14px;border-radius:6px">scoring.ts</span>
+        <span style="opacity:0.4">→</span>
+        <span style="background:#334155;padding:6px 14px;border-radius:6px">briefing.ts</span>
+        <span style="opacity:0.4">→</span>
+        <span style="background:#1e3a5f;padding:6px 14px;border-radius:6px;color:#60a5fa">BRIEFING.md</span>
+        <span style="opacity:0.4;font-size:12px">(unchanged)</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-left:220px;margin-top:8px">
+        <span style="opacity:0.4">↘</span>
+        <span style="background:#1a3a2a;padding:6px 14px;border-radius:6px;color:#4ade80">registry.json</span>
+        <span style="opacity:0.4">→</span>
+        <span style="background:#422006;padding:6px 14px;border-radius:6px;color:#facc15;font-weight:bold">ai-briefing.ts</span>
+        <span style="opacity:0.3">+</span>
+        <span style="background:#3b0764;padding:6px 14px;border-radius:6px;color:#c084fc">prompts/briefing.md</span>
+        <span style="opacity:0.4">→</span>
+        <span style="background:#334155;padding:6px 14px;border-radius:6px">telegram.ts</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px">
+  <h3>New Files</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:12px">
+    <div style="background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.3);border-radius:8px;padding:16px">
+      <div style="font-weight:600;color:#facc15;margin-bottom:8px">src/ai-briefing.ts</div>
+      <ul style="font-size:13px;opacity:0.8;margin:0;padding-left:18px;line-height:1.6">
+        <li>Loads prompt template from disk</li>
+        <li>Injects registry.json as context</li>
+        <li>Calls Claude Haiku API</li>
+        <li>Returns formatted Telegram HTML</li>
+      </ul>
+    </div>
+    <div style="background:rgba(192,132,252,0.1);border:1px solid rgba(192,132,252,0.3);border-radius:8px;padding:16px">
+      <div style="font-weight:600;color:#c084fc;margin-bottom:8px">prompts/briefing.md</div>
+      <ul style="font-size:13px;opacity:0.8;margin:0;padding-left:18px;line-height:1.6">
+        <li>System prompt for briefing generation</li>
+        <li>Defines tone, format, structure</li>
+        <li>Instructs cross-project analysis</li>
+        <li>Specifies Telegram HTML output format</li>
+      </ul>
+    </div>
+    <div style="background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.3);border-radius:8px;padding:16px">
+      <div style="font-weight:600;color:#60a5fa;margin-bottom:8px">Modified Files</div>
+      <ul style="font-size:13px;opacity:0.8;margin:0;padding-left:18px;line-height:1.6">
+        <li><code>orchestrator.config.ts</code> — add AI config</li>
+        <li><code>src/types.ts</code> — add AIConfig type</li>
+        <li><code>src/cli.ts</code> — swap in AI briefing for notify</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px">
+  <h3>Config Addition</h3>
+  <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:16px;font-family:monospace;font-size:13px;line-height:1.6">
+    <span style="opacity:0.5">// orchestrator.config.ts</span><br>
+    ai: {<br>
+    &nbsp;&nbsp;model: <span style="color:#4ade80">"claude-haiku-4-5-20251001"</span>,<br>
+    &nbsp;&nbsp;apiKey: <span style="color:#4ade80">process.env.ANTHROPIC_API_KEY</span>,<br>
+    }
+  </div>
+</div>

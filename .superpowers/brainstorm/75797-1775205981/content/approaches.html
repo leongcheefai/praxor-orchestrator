@@ -1,0 +1,52 @@
+<h2>AI Briefing Architecture — 3 Approaches</h2>
+<p class="subtitle">How should the AI generation layer integrate with your existing pipeline?</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Direct Replace — New <code>ai-briefing.ts</code></h3>
+      <p>Create a single new module that takes <code>registry.json</code> as context, calls Claude Haiku, and returns the Telegram message string.</p>
+      <div style="margin-top:12px;padding:16px;background:rgba(255,255,255,0.05);border-radius:8px;font-family:monospace;font-size:13px;line-height:1.8">
+        scanner → scoring → <span style="color:#4ade80">registry.json</span> → <span style="color:#facc15;font-weight:bold">ai-briefing.ts (Claude API)</span> → telegram<br>
+        scanner → scoring → briefing.ts → BRIEFING.md <span style="opacity:0.5">(unchanged)</span>
+      </div>
+      <div class="pros-cons" style="margin-top:12px">
+        <div class="pros"><h4>Pros</h4><ul><li>Minimal changes — one new file, one swap in the notify pipeline</li><li>registry.json already has everything the AI needs</li><li>Easy to test independently</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>System prompt lives as a string in code — harder to iterate on</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Prompt Template — Separate prompt file + module</h3>
+      <p>Same as A, but the system prompt lives in a <code>.md</code> file (e.g., <code>prompts/briefing.md</code>) that gets loaded at runtime. The module handles API call + context injection.</p>
+      <div style="margin-top:12px;padding:16px;background:rgba(255,255,255,0.05);border-radius:8px;font-family:monospace;font-size:13px;line-height:1.8">
+        scanner → scoring → <span style="color:#4ade80">registry.json</span> → <span style="color:#facc15;font-weight:bold">ai-briefing.ts</span> + <span style="color:#c084fc">prompts/briefing.md</span> → telegram
+      </div>
+      <div class="pros-cons" style="margin-top:12px">
+        <div class="pros"><h4>Pros</h4><ul><li>Prompt is easy to edit and iterate on without touching code</li><li>Could version/swap prompts for different briefing styles</li><li>Same minimal code changes as A</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Extra file to manage — slightly more moving parts</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>AI Service Layer — Generic Claude client + briefing use-case</h3>
+      <p>Build a reusable <code>ai.ts</code> client module (handles API key, model config, retries), then <code>ai-briefing.ts</code> uses it for the briefing use-case. Ready for future AI features.</p>
+      <div style="margin-top:12px;padding:16px;background:rgba(255,255,255,0.05);border-radius:8px;font-family:monospace;font-size:13px;line-height:1.8">
+        scanner → scoring → <span style="color:#4ade80">registry.json</span> → <span style="color:#facc15;font-weight:bold">ai-briefing.ts</span> → <span style="color:#60a5fa">ai.ts (Claude client)</span> → telegram
+      </div>
+      <div class="pros-cons" style="margin-top:12px">
+        <div class="pros"><h4>Pros</h4><ul><li>Clean separation — API concerns vs briefing logic</li><li>Ready if you later add conversational features</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>More abstraction than needed for a single use case right now</li><li>YAGNI — premature if you stick with option 1 (AI briefings only)</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p style="margin-top:24px;opacity:0.7;font-size:14px"><strong>Recommendation:</strong> Approach B — best balance of simplicity and iterability. The prompt is the thing you'll tweak most, so keeping it in its own file pays off immediately.</p>
