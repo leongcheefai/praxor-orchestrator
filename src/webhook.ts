@@ -90,9 +90,20 @@ function resolveProjectFromStart(
   // Sort project names by length descending so longer names match first
   const sorted = [...config.projects].sort((a, b) => b.name.length - a.name.length);
 
+  // Try " - " separator pattern first (e.g., "ProjectName - status message")
+  // This handles typos and multi-word names with explicit separators
+  const dashIndex = text.indexOf(" - ");
+  if (dashIndex > 0) {
+    const projectPart = text.slice(0, dashIndex).trim();
+    const resolved = resolveProjectName(projectPart, config);
+    if (resolved) {
+      return { name: resolved, matchLength: dashIndex + 3 }; // skip past " - "
+    }
+  }
+
+  // Exact prefix match against project names
   for (const project of sorted) {
     const nameLower = project.name.toLowerCase();
-    // Check if text starts with the project name followed by a space
     if (lower.startsWith(nameLower + " ") || lower === nameLower) {
       return { name: project.name, matchLength: project.name.length };
     }
