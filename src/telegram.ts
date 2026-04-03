@@ -77,59 +77,44 @@ export function formatTelegramBriefing(
   const lines: string[] = [];
   const now = new Date();
 
-  lines.push(`*🔍 Morning Briefing*`);
+  lines.push(`*\u{1F50D} Morning Briefing*`);
   lines.push(`_${formatDate(now)}_`);
   lines.push("");
 
-  // Alerts
-  const stale = reports.filter(
-    (r) =>
-      r.config.status === "active" &&
-      r.git.hasGit &&
-      r.git.daysSinceLastCommit > config.stalenessThresholdDays
-  );
-  const uncommitted = reports.filter(
-    (r) => r.config.status === "active" && r.git.uncommittedChanges
-  );
-  const missingClaude = reports.filter(
-    (r) => r.config.status === "active" && r.git.hasGit && !r.claudeMd.exists
-  );
-
-  if (stale.length > 0 || uncommitted.length > 0 || missingClaude.length > 0) {
-    lines.push("*⚠️ Alerts*");
-    for (const r of stale) {
-      lines.push(
-        `🔴 *${escapeMd(r.config.name)}* stale (${r.git.daysSinceLastCommit}d)`
-      );
-    }
-    for (const r of uncommitted) {
-      lines.push(
-        `📦 *${escapeMd(r.config.name)}* uncommitted on ${escapeMd(r.git.currentBranch)}`
-      );
-    }
-    for (const r of missingClaude) {
-      lines.push(`📝 *${escapeMd(r.config.name)}* missing CLAUDE.md`);
+  // Attention Needed (alerts)
+  const allAlerts = reports.flatMap((r) => r.alerts);
+  if (allAlerts.length > 0) {
+    lines.push("*\u26A0\uFE0F Attention Needed*");
+    const severityIcon: Record<string, string> = { critical: "\u{1F534}", warning: "\u{1F7E1}", info: "\u{1F535}" };
+    for (const alert of allAlerts) {
+      lines.push(`${severityIcon[alert.severity]} ${escapeMd(alert.message)}`);
     }
     lines.push("");
   }
 
-  // Active projects - one line per project
-  const active = reports
-    .filter((r) => r.config.status === "active")
-    .sort((a, b) => {
-      if (!a.git.lastCommitDate) return 1;
-      if (!b.git.lastCommitDate) return -1;
-      return b.git.lastCommitDate.getTime() - a.git.lastCommitDate.getTime();
-    });
+  // Today's Focus — top 3
+  const scored = reports
+    .filter((r) => r.score)
+    .sort((a, b) => b.score!.score - a.score!.score)
+    .slice(0, 3);
 
+  if (scored.length > 0) {
+    lines.push("*\u{1F3AF} Today's Focus*");
+    scored.forEach((r, i) => {
+      lines.push(`${i + 1}\\. *${escapeMd(r.config.name)}* \\(${r.score!.score.toFixed(2)}\\) \u2014 ${escapeMd(r.score!.reasoning)}`);
+    });
+    lines.push("");
+  }
+
+  // Momentum summary
+  const active = reports.filter((r) => r.config.status === "active");
   if (active.length > 0) {
-    lines.push("*📊 Projects*");
+    const trendIcon: Record<string, string> = { building: "\u{1F7E2}", steady: "\u{1F7E1}", cooling: "\u{1F7E0}", lost: "\u{1F534}" };
+    lines.push("*\u{1F4C8} Momentum*");
     for (const r of active) {
-      const days = r.git.hasGit ? `${r.git.daysSinceLastCommit}d ago` : "no git";
-      const goal = r.claudeMd.currentGoal
-        ? ` — ${escapeMd(r.claudeMd.currentGoal)}`
-        : "";
-      lines.push(`${r.health} *${escapeMd(r.config.name)}* (${days})${goal}`);
+      const streak = r.momentum.streak > 0 ? `${r.momentum.streak}d streak` : "";
+      const trend = `${trendIcon[r.momentum.trend]} ${r.momentum.trend}`;
+      lines.push(`${trend} *${escapeMd(r.config.name)}* ${streak}`);
     }
     lines.push("");
   }
@@ -137,28 +122,14 @@ export function formatTelegramBriefing(
   // Parked projects
   const parked = reports.filter((r) => r.config.status === "parked");
   if (parked.length > 0) {
-    lines.push("*💤 Parked*");
+    lines.push("*\u{1F4A4} Parked*");
     for (const r of parked) {
       const reason = r.config.parkedReason
-        ? ` — ${escapeMd(r.config.parkedReason)}`
+        ? ` \u2014 ${escapeMd(r.config.parkedReason)}`
         : "";
-      lines.push(`⚪ ${escapeMd(r.config.name)}${reason}`);
+      lines.push(`\u26AA ${escapeMd(r.config.name)}${reason}`);
     }
     lines.push("");
-  }
-
-  // Daily focus
-  if (active.length > 0) {
-    const top = active[0];
-    lines.push(`*🎯 Focus:* ${escapeMd(top.config.name)}`);
-    if (top.claudeMd.currentGoal) {
-      lines.push(escapeMd(top.claudeMd.currentGoal));
-    }
-    if (uncommitted.length > 0) {
-      lines.push(
-        `\n⚠️ Commit pending: ${uncommitted.map((r) => escapeMd(r.config.name)).join(", ")}`
-      );
-    }
   }
 
   return lines.join("\n");
