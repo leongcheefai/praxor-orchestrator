@@ -69,6 +69,16 @@ const config: OrchestratorConfig = {
       description: "Offero is a platform for creating and managing offers for your products and services.",
       priority: "low",
     },
+    {
+      name: "Praxor Orchestrator",
+      repo: "leongcheefai/praxor-orchestrator",
+      branch: "master",
+      type: "micro-tool",
+      platform: "cli",
+      status: "active",
+      description: "A lightweight, zero-dependency CLI tool that scans your project portfolio, gathers Git activity and development context, and generates briefings and registries — giving you a bird's-eye view of all your projects at a glance.",
+      priority: "medium",
+    },
     // {
     //   name: "old-tool",
     //   repo: "cheefai/old-tool",

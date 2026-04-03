@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-03T07:46:25.639Z",
+  "generatedAt": "2026-04-03T07:52:26.216Z",
   "projects": [
     {
-      "name": "offero",
+      "name": "Offero",
       "repo": "leongcheefai/offero",
       "branch": "master",
       "type": "saas",
@@ -49,7 +49,7 @@
       "alerts": []
     },
     {
-      "name": "viaticus",
+      "name": "Viaticus",
       "repo": "first-to-fly/firsttofly-garage-viaticus",
       "branch": "production",
       "type": "client",
@@ -149,7 +149,7 @@
       "alerts": []
     },
     {
-      "name": "onz-webapp",
+      "name": "Onz",
       "repo": "weikaikhoo/onz-webapp",
       "branch": "main",
       "type": "saas",
@@ -196,7 +196,7 @@
       "alerts": []
     },
     {
-      "name": "vanta - team hub",
+      "name": "Vanta - Team Hub",
       "repo": "kit9898/team-hub-",
       "branch": "main",
       "type": "saas",
@@ -243,7 +243,7 @@
       "alerts": []
     },
     {
-      "name": "vanta - workshop management",
+      "name": "Vanta - Workshop Management",
       "repo": "kit9898/workshop-management-system",
       "branch": "main",
       "type": "saas",
@@ -284,6 +284,53 @@
         "factors": {
           "priority": 0.3,
           "momentum": 1,
+          "impact": 0
+        }
+      },
+      "alerts": []
+    },
+    {
+      "name": "Praxor Orchestrator",
+      "repo": "leongcheefai/praxor-orchestrator",
+      "branch": "master",
+      "type": "micro-tool",
+      "platform": "cli",
+      "status": "active",
+      "description": "A lightweight, zero-dependency CLI tool that scans your project portfolio, gathers Git activity and development context, and generates briefings and registries — giving you a bird's-eye view of all your projects at a glance.",
+      "priority": "medium",
+      "health": "🟢",
+      "git": {
+        "hasGit": true,
+        "lastCommitDate": "2026-04-03T07:48:49.000Z",
+        "lastCommitMessage": "fix: telegram delivery",
+        "daysSinceLastCommit": 0,
+        "currentBranch": "master",
+        "uncommittedChanges": false
+      },
+      "claudeMd": {
+        "exists": false,
+        "currentGoal": null,
+        "inProgress": [],
+        "knownIssues": []
+      },
+      "momentum": {
+        "streak": 1,
+        "daysSinceLastCommit": 0,
+        "lastSessionCommits": 10,
+        "lastSessionDuration": "2.7 hours",
+        "lastSessionDate": "2026-04-03",
+        "trend": "steady"
+      },
+      "issues": {
+        "total": 0,
+        "bugs": 0
+      },
+      "score": {
+        "score": 0.35,
+        "reasoning": "Medium priority, steady momentum",
+        "factors": {
+          "priority": 0.6,
+          "momentum": 0.3,
           "impact": 0
         }
       },

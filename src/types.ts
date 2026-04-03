@@ -3,7 +3,7 @@ export interface ProjectConfig {
   repo: string; // GitHub "owner/repo" format
   branch: string; // branch to scan (default: "main")
   type: "saas" | "client" | "micro-tool";
-  platform: "web" | "ios" | "both";
+  platform: "web" | "ios" | "both" | "cli";
   status: "active" | "parked";
   description: string;
   priority?: "high" | "medium" | "low";
