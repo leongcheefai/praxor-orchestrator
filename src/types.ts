@@ -6,6 +6,7 @@ export interface ProjectConfig {
   platform: "web" | "ios" | "both";
   status: "active" | "parked";
   description: string;
+  priority?: "high" | "medium" | "low";
   clientName?: string;
   budget?: { total: number; invoiced: number; currency: string };
   parkedReason?: string;
@@ -42,9 +43,46 @@ export interface ClaudeMdInfo {
 
 export type HealthStatus = "\u{1F7E2}" | "\u{1F7E1}" | "\u{1F534}" | "\u26AA" | "\u2753";
 
+export type MomentumTrend = "building" | "steady" | "cooling" | "lost";
+
+export interface MomentumData {
+  streak: number;
+  daysSinceLastCommit: number;
+  lastSessionCommits: number;
+  lastSessionDuration: string;
+  lastSessionDate: string;
+  trend: MomentumTrend;
+}
+
+export interface IssueInfo {
+  total: number;
+  bugs: number;
+}
+
+export interface ProjectScore {
+  project: string;
+  score: number;
+  reasoning: string;
+  factors: {
+    priority: number;
+    momentum: number;
+    impact: number;
+  };
+}
+
+export interface Alert {
+  project: string;
+  severity: "critical" | "warning" | "info";
+  message: string;
+}
+
 export interface ProjectReport {
   config: ProjectConfig;
   git: GitInfo;
   claudeMd: ClaudeMdInfo;
   health: HealthStatus;
+  momentum: MomentumData;
+  issues: IssueInfo;
+  score?: ProjectScore;
+  alerts: Alert[];
 }
