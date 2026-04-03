@@ -15,7 +15,7 @@ export async function generateAIBriefing(
 
   const model = config.ai?.model ?? "claude-haiku-4-5-20251001";
   const systemPrompt = readFileSync(
-    join(PROJECT_ROOT, "prompts", "briefing.md"),
+    resolve(PROJECT_ROOT, "prompts", "briefing.md"),
     "utf-8"
   );
 
