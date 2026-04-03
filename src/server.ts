@@ -53,9 +53,10 @@ Bun.serve({
     }
 
     if (url.pathname === "/webhook/telegram" && req.method === "POST") {
+      let msg: ReturnType<typeof parseTelegramUpdate> = null;
       try {
         const body = await req.json();
-        const msg = parseTelegramUpdate(body);
+        msg = parseTelegramUpdate(body);
         if (!msg) return new Response("ok");
 
         // Validate chat ID
@@ -73,7 +74,11 @@ Bun.serve({
         await sendTelegramReply(reply, msg.messageId).catch(() => {});
 
         return new Response("ok");
-      } catch {
+      } catch (err) {
+        console.error("Webhook error:", (err as Error).message);
+        if (msg) {
+          await sendTelegramReply(`Error: ${(err as Error).message}`, msg.messageId).catch(() => {});
+        }
         return new Response("ok");
       }
     }

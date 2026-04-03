@@ -1,4 +1,4 @@
-import { existsSync } from "fs";
+import { existsSync, mkdirSync } from "fs";
 import { join } from "path";
 import type { StatusNote, OrchestratorConfig } from "./types";
 
@@ -22,6 +22,9 @@ export function loadStatusNotes(outputDir: string): StatusNotesStore {
 }
 
 export async function saveStatusNotes(outputDir: string, store: StatusNotesStore): Promise<void> {
+  if (!existsSync(outputDir)) {
+    mkdirSync(outputDir, { recursive: true });
+  }
   const filePath = join(outputDir, NOTES_FILE);
   await Bun.write(filePath, JSON.stringify(store, null, 2));
 }
