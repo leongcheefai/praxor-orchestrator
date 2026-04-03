@@ -13,6 +13,7 @@ import { computeScores } from "./scoring";
 import { evaluateAlerts } from "./alerts";
 import { loadStatusNotes, getNotesForProject, getRecentNotes, addStatusNote, resolveProjectName } from "./status-notes";
 import { parseTelegramUpdate, handleWebhookCommand } from "./webhook";
+import { generateAIBriefing } from "./ai-briefing";
 import type { ProjectReport } from "./types";
 
 function expandPath(p: string): string {
@@ -206,7 +207,7 @@ async function main() {
     await Bun.write(registryPath, JSON.stringify(registry, null, 2));
     console.log(`Registry written to ${registryPath}`);
 
-    const message = formatTelegramBriefing(reports, config);
+    const message = await generateAIBriefing(registry, config);
     try {
       await sendTelegram(message);
       console.log("Telegram notification sent successfully.");
