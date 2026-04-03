@@ -51,7 +51,10 @@ export function generateBriefing(reports: ProjectReport[], config: OrchestratorC
       const session = r.momentum.lastSessionCommits > 0
         ? `${r.momentum.lastSessionCommits} commits, ${r.momentum.lastSessionDuration} (${r.momentum.lastSessionDate})`
         : "no activity";
-      lines.push(`| ${r.config.name} | ${r.momentum.streak} days | ${session} | ${trendIcon[r.momentum.trend]} ${r.momentum.trend} |`);
+      const noteText = (r.statusNotes && r.statusNotes.length > 0)
+        ? ` \u{1F4DD} "${r.statusNotes[r.statusNotes.length - 1].message}"`
+        : "";
+      lines.push(`| ${r.config.name} | ${r.momentum.streak} days | ${session} | ${trendIcon[r.momentum.trend]} ${r.momentum.trend}${noteText} |`);
     }
     lines.push("");
   }

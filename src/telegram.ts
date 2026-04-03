@@ -199,6 +199,10 @@ export function formatTelegramBriefing(
       const streak = r.momentum.streak > 0 ? `${r.momentum.streak}d streak` : "";
       const icon = trendIcon[r.momentum.trend];
       lines.push(`${icon} <b>${esc(r.config.name)}</b> \u2014 ${r.momentum.trend} ${streak}`);
+      if (r.statusNotes && r.statusNotes.length > 0) {
+        const latest = r.statusNotes[r.statusNotes.length - 1];
+        lines.push(`   \u{1F4DD} "${esc(latest.message)}"`);
+      }
     }
     lines.push("");
   }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-03T08:29:59.109Z",
+  "generatedAt": "2026-04-03T08:38:46.419Z",
   "projects": [
     {
       "name": "Offero",
@@ -38,12 +38,13 @@
         "bugs": 0
       },
       "score": {
-        "score": 0.51,
+        "score": 0.44,
         "reasoning": "High priority, steady momentum",
         "factors": {
           "priority": 1,
           "momentum": 0.3,
-          "impact": 0
+          "impact": 0,
+          "engagement": 0
         }
       },
       "alerts": [],
@@ -97,12 +98,13 @@
         "bugs": 0
       },
       "score": {
-        "score": 0.76,
+        "score": 0.64,
         "reasoning": "High priority, steady momentum, 1 open issues",
         "factors": {
           "priority": 1,
           "momentum": 0.3,
-          "impact": 1
+          "impact": 1,
+          "engagement": 0
         }
       },
       "alerts": [],
@@ -157,12 +159,13 @@
         "bugs": 0
       },
       "score": {
-        "score": 0.4,
+        "score": 0.35,
         "reasoning": "Low priority, cooling off",
         "factors": {
           "priority": 0.3,
           "momentum": 0.8,
-          "impact": 0
+          "impact": 0,
+          "engagement": 0
         }
       },
       "alerts": []
@@ -204,12 +207,13 @@
         "bugs": 0
       },
       "score": {
-        "score": 0.31,
+        "score": 0.27,
         "reasoning": "Medium priority, building momentum — on track",
         "factors": {
           "priority": 0.6,
           "momentum": 0.2,
-          "impact": 0
+          "impact": 0,
+          "engagement": 0
         }
       },
       "alerts": []
@@ -251,12 +255,13 @@
         "bugs": 0
       },
       "score": {
-        "score": 0.22,
+        "score": 0.2,
         "reasoning": "Low priority, steady momentum",
         "factors": {
           "priority": 0.3,
           "momentum": 0.3,
-          "impact": 0
+          "impact": 0,
+          "engagement": 0
         }
       },
       "alerts": []
@@ -298,12 +303,13 @@
         "bugs": 0
       },
       "score": {
-        "score": 0.47,
+        "score": 0.41,
         "reasoning": "Low priority, momentum lost — needs intervention",
         "factors": {
           "priority": 0.3,
           "momentum": 1,
-          "impact": 0
+          "impact": 0,
+          "engagement": 0
         }
       },
       "alerts": []
@@ -320,8 +326,8 @@
       "health": "🟢",
       "git": {
         "hasGit": true,
-        "lastCommitDate": "2026-04-03T08:10:58.000Z",
-        "lastCommitMessage": "feat: add update project status via telegram",
+        "lastCommitDate": "2026-04-03T08:31:55.000Z",
+        "lastCommitMessage": "fix: add commands into BotFather",
         "daysSinceLastCommit": 0,
         "currentBranch": "master",
         "uncommittedChanges": false
@@ -335,8 +341,8 @@
       "momentum": {
         "streak": 1,
         "daysSinceLastCommit": 0,
-        "lastSessionCommits": 12,
-        "lastSessionDuration": "3.0 hours",
+        "lastSessionCommits": 13,
+        "lastSessionDuration": "3.4 hours",
         "lastSessionDate": "2026-04-03",
         "trend": "steady"
       },
@@ -345,15 +351,23 @@
         "bugs": 0
       },
       "score": {
-        "score": 0.35,
+        "score": 0.3,
         "reasoning": "Medium priority, steady momentum",
         "factors": {
           "priority": 0.6,
           "momentum": 0.3,
-          "impact": 0
+          "impact": 0,
+          "engagement": 0
         }
       },
-      "alerts": []
+      "alerts": [],
+      "statusNotes": [
+        {
+          "project": "Praxor Orchestrator",
+          "message": "add updating feature via telegram",
+          "timestamp": "2026-04-03T08:31:34.162Z"
+        }
+      ]
     }
   ]
 }

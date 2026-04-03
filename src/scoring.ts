@@ -27,10 +27,11 @@ export function computeScores(reports: ProjectReport[]): ProjectScore[] {
     const momentum = MOMENTUM_NEED[r.momentum.trend];
     const weightedIssues = r.issues.total + r.issues.bugs; // bugs counted twice (once in total, once extra)
     const impact = weightedIssues / maxIssues;
+    const engagement = (r.statusNotes && r.statusNotes.length > 0) ? 1.0 : 0.0;
 
-    const score = priority * 0.4 + momentum * 0.35 + impact * 0.25;
+    const score = priority * 0.35 + momentum * 0.30 + impact * 0.20 + engagement * 0.15;
 
-    const reasoning = buildReasoning(r, { priority, momentum, impact });
+    const reasoning = buildReasoning(r, { priority, momentum, impact, engagement });
 
     return {
       project: r.config.name,
@@ -40,6 +41,7 @@ export function computeScores(reports: ProjectReport[]): ProjectScore[] {
         priority,
         momentum,
         impact: Math.round(impact * 100) / 100,
+        engagement,
       },
     };
   });
@@ -49,7 +51,7 @@ export function computeScores(reports: ProjectReport[]): ProjectScore[] {
 
 function buildReasoning(
   report: ProjectReport,
-  factors: { priority: number; momentum: number; impact: number }
+  factors: { priority: number; momentum: number; impact: number; engagement: number }
 ): string {
   const parts: string[] = [];
 
@@ -67,6 +69,11 @@ function buildReasoning(
   if (report.issues.total > 0) {
     const bugNote = report.issues.bugs > 0 ? ` (${report.issues.bugs} bugs)` : "";
     parts.push(`${report.issues.total} open issues${bugNote}`);
+  }
+
+  if (factors.engagement > 0 && report.statusNotes && report.statusNotes.length > 0) {
+    const latest = report.statusNotes[report.statusNotes.length - 1];
+    parts.push(`\u{1F4DD} recent update: "${latest.message}"`);
   }
 
   return parts.join(", ");

@@ -2,31 +2,32 @@
 
 ## Today's Focus (Ranked)
 
-1. **Viaticus** (score: 0.76) — High priority, steady momentum, 1 open issues
-2. **Offero** (score: 0.51) — High priority, steady momentum
-3. **Vanta - Workshop Management** (score: 0.47) — Low priority, momentum lost — needs intervention
-4. **praxor** (score: 0.40) — Low priority, cooling off
-5. **Praxor Orchestrator** (score: 0.35) — Medium priority, steady momentum
-6. **Onz** (score: 0.31) — Medium priority, building momentum — on track
-7. **Vanta - Team Hub** (score: 0.22) — Low priority, steady momentum
+1. **Viaticus** (score: 0.64) — High priority, steady momentum, 1 open issues
+2. **Offero** (score: 0.44) — High priority, steady momentum
+3. **Vanta - Workshop Management** (score: 0.41) — Low priority, momentum lost — needs intervention
+4. **praxor** (score: 0.35) — Low priority, cooling off
+5. **Praxor Orchestrator** (score: 0.30) — Medium priority, steady momentum
+6. **Onz** (score: 0.27) — Medium priority, building momentum — on track
+7. **Vanta - Team Hub** (score: 0.20) — Low priority, steady momentum
 
 ## Momentum
 
 | Project | Streak | Last Session | Trend |
 |---------|--------|-------------|-------|
-| Offero | 2 days | 22 commits, 4.3 hours (2026-04-02) | 🟡 steady |
-| Viaticus | 1 days | 5 commits, 3.8 hours (2026-04-02) | 🟡 steady |
+| Offero | 2 days | 22 commits, 4.3 hours (2026-04-02) | 🟡 steady 📝 "shipped auth feature" |
+| Viaticus | 1 days | 5 commits, 3.8 hours (2026-04-02) | 🟡 steady 📝 "watch Safari Portal video on how to build the itinerary builder" |
 | praxor | 0 days | 1 commits, single commit (2026-03-27) | 🟠 cooling |
 | Onz | 4 days | 1 commits, single commit (2026-04-03) | 🟢 building |
 | Vanta - Team Hub | 1 days | 1 commits, single commit (2026-04-02) | 🟡 steady |
 | Vanta - Workshop Management | 0 days | 2 commits, single commit (2026-03-16) | 🔴 lost |
-| Praxor Orchestrator | 1 days | 12 commits, 3.0 hours (2026-04-03) | 🟡 steady |
+| Praxor Orchestrator | 1 days | 13 commits, 3.4 hours (2026-04-03) | 🟡 steady 📝 "add updating feature via telegram" |
 
 ## Status Notes
 
 - **Offero**: shipped auth feature _(4/3/2026, 4:09:05 PM)_
 - **Offero**: shipped auth feature _(4/3/2026, 4:09:06 PM)_
 - **Viaticus**: watch Safari Portal video on how to build the itinerary builder _(4/3/2026, 4:29:45 PM)_
+- **Praxor Orchestrator**: add updating feature via telegram _(4/3/2026, 4:31:34 PM)_
 
 ## Alerts
 
@@ -81,7 +82,9 @@
 
 - **Type:** micro-tool | **Platform:** cli | **Priority:** medium
 - **Branch:** `master`
-- **Last commit:** 2026-04-03 (0d ago) - feat: add update project status via telegram
+- **Last commit:** 2026-04-03 (0d ago) - fix: add commands into BotFather
+- **Status notes:**
+  - add updating feature via telegram _(4/3/2026, 4:31:34 PM)_
 
 ### 🟢 Onz
 

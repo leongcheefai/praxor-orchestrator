@@ -67,6 +67,7 @@ export interface ProjectScore {
     priority: number;
     momentum: number;
     impact: number;
+    engagement: number;
   };
 }
 
