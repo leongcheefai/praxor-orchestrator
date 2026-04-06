@@ -1,7 +1,7 @@
 import { loadConfig } from "./config";
 import { scanAll } from "./cli";
 import { generateBriefing, generateRegistry } from "./briefing";
-import { sendTelegram, sendTelegramReply } from "./telegram";
+import { sendTelegram, sendTelegramReply, sanitizeTelegramHtml } from "./telegram";
 import { generateAIBriefing } from "./ai-briefing";
 import { parseTelegramUpdate, handleWebhookCommand } from "./webhook";
 import { resolve } from "path";
@@ -91,7 +91,8 @@ Bun.serve({
       try {
         const { reports, config } = await runSync();
         const registry = generateRegistry(reports);
-        const message = await generateAIBriefing(registry, config);
+        const rawMessage = await generateAIBriefing(registry, config);
+        const message = sanitizeTelegramHtml(rawMessage);
 
         if (config.telegram?.enabled) {
           await sendTelegram(message);

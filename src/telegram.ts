@@ -234,6 +234,21 @@ export function formatTelegramBriefing(
   return lines.join("\n");
 }
 
+/** Strip HTML tags not supported by Telegram's HTML parse mode. */
+export function sanitizeTelegramHtml(html: string): string {
+  const allowed = new Set([
+    "b", "strong", "i", "em", "u", "ins", "s", "strike", "del",
+    "code", "pre", "a", "tg-spoiler", "blockquote",
+  ]);
+
+  return html.replace(/<\/?([a-zA-Z][a-zA-Z0-9-]*)\b[^>]*>/g, (match, tag) => {
+    const lower = tag.toLowerCase();
+    if (allowed.has(lower)) return match;
+    // Replace unsupported tags with nothing (or space for block-level)
+    return "";
+  });
+}
+
 function esc(text: string): string {
   return text
     .replace(/&/g, "&amp;")

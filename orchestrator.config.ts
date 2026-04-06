@@ -36,7 +36,7 @@ const config: OrchestratorConfig = {
       branch: "main",
       type: "saas",
       platform: "web",
-      status: "active",
+      status: "parked",
       description: "Praxor is a development studio for building web and mobile apps.",
       priority: "low",
     },

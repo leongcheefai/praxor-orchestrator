@@ -7,7 +7,7 @@ import { scanGit, scanClaudeMd, scanIssues } from "./scanner";
 import { computeHealth } from "./health";
 import { printTable } from "./table";
 import { generateBriefing, generateRegistry } from "./briefing";
-import { sendTelegram, formatTelegramBriefing, setWebhook, deleteWebhook, getUpdates, sendTelegramReply } from "./telegram";
+import { sendTelegram, formatTelegramBriefing, setWebhook, deleteWebhook, getUpdates, sendTelegramReply, sanitizeTelegramHtml } from "./telegram";
 import { computeMomentum } from "./momentum";
 import { computeScores } from "./scoring";
 import { evaluateAlerts } from "./alerts";
@@ -207,7 +207,8 @@ async function main() {
     await Bun.write(registryPath, JSON.stringify(registry, null, 2));
     console.log(`Registry written to ${registryPath}`);
 
-    const message = await generateAIBriefing(registry, config);
+    const rawMessage = await generateAIBriefing(registry, config);
+    const message = sanitizeTelegramHtml(rawMessage);
     try {
       await sendTelegram(message);
       console.log("Telegram notification sent successfully.");
