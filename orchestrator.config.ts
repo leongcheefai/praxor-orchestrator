@@ -26,7 +26,7 @@ const config: OrchestratorConfig = {
       branch: "production",
       type: "saas",
       platform: "web",
-      status: "active",
+      status: "parked",
       description: "DMC web app",
       priority: "high",
     },
